@@ -10,12 +10,12 @@ export function VectorVsMeltLoupe() {
   const { playLoupeFocus, playShutter } = useStudioAudio();
 
   const stageRef = useRef<HTMLDivElement>(null);
-  const [lensPos, setLensPos] = useState({ x: 64, y: 52 });
+  const [lensPos, setLensPos] = useState({ x: 70, y: 56 });
   const [inspectionMode, setInspectionMode] = useState<
     'loupe' | 'full-blonde' | 'full-generic'
   >('loupe');
   const [isActive, setIsActive] = useState(false);
-  const [loupeRadiusPx, setLoupeRadiusPx] = useState(120);
+  const [loupeRadiusPx, setLoupeRadiusPx] = useState(136);
   const isPointerDownRef = useRef(false);
 
   // Dynamically size the optical loupe ring so its diameter is always strictly smaller than the stage height on mobile & desktop
@@ -24,7 +24,7 @@ export function VectorVsMeltLoupe() {
       if (typeof window === 'undefined') return;
       const stageEl = stageRef.current;
       const stageH = stageEl?.getBoundingClientRect().height || 260;
-      const maxAllowedRadius = Math.floor(Math.min(stageH * 0.34, window.innerWidth < 640 ? 68 : 122));
+      const maxAllowedRadius = Math.floor(Math.min(stageH * 0.36, window.innerWidth < 640 ? 68 : 144));
       setLoupeRadiusPx(Math.max(48, maxAllowedRadius));
     };
     updateLoupeSize();

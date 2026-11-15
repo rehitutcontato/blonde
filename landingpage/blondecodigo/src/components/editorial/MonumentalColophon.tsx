@@ -19,6 +19,7 @@ export function MonumentalColophon() {
   } = useStudioAudio();
 
   const handleLocaleClick = (code: LocaleCode) => {
+    if (locale === code) return;
     playLocaleSwitch();
     setLocale(code);
   };
@@ -30,7 +31,7 @@ export function MonumentalColophon() {
     >
       <div className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-12 space-y-12 sm:space-y-16">
         {/* Telemetry Control Row: 6 Languages + Sound Toggle + Direct WhatsApp Link */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center pb-8 border-b border-[#EAE2D3]/15">
+        <div className="scroll-mt-24 grid grid-cols-1 md:grid-cols-12 gap-6 items-center pb-8 border-b border-[#EAE2D3]/15">
           {/* 6-Locale Switcher */}
           <div className="md:col-span-6 flex flex-wrap items-center gap-2">
             <span className="font-mono text-[10px] tracking-[0.14em] text-[#9CA39E] uppercase mr-2">
@@ -45,8 +46,9 @@ export function MonumentalColophon() {
                   lang={item.code}
                   aria-current={isActive ? 'true' : undefined}
                   data-testid={`lang-btn-footer-${item.code}`}
+                  onPointerDown={() => handleLocaleClick(item.code)}
                   onClick={() => handleLocaleClick(item.code)}
-                  className={`min-h-[44px] min-w-[44px] px-3.5 py-2 rounded-full font-mono text-xs tracking-[0.1em] uppercase border transition-all ${
+                  className={`scroll-mt-24 min-h-[44px] min-w-[44px] px-3.5 py-2 rounded-full font-mono text-xs tracking-[0.1em] uppercase border transition-all ${
                     isActive
                       ? 'bg-[#CCFF29] text-[#090B0A] border-[#CCFF29] font-bold'
                       : 'bg-[#121614] text-[#9CA39E] border-[#EAE2D3]/15 hover:text-[#EAE2D3]'
@@ -76,6 +78,7 @@ export function MonumentalColophon() {
                 checked={soundEnabled}
                 onChange={toggleSound}
                 aria-label={soundEnabled ? t.nav.soundOn : t.nav.soundOff}
+                className="sr-only"
               />
               <span>[ {soundEnabled ? t.nav.soundOn : t.nav.soundOff} ]</span>
             </label>
@@ -95,28 +98,27 @@ export function MonumentalColophon() {
         </div>
 
         {/* Monumental Full-Width Lockup & Wordmark with 30-degree Blonde Volt Beam Slash */}
-        <div className="relative py-4 sm:py-6 flex flex-col items-center text-center overflow-hidden">
-          <div className="mb-6">
-            <img
-              src={
-                locale === 'pt'
-                  ? '/assets/brand/blonde-ai-lockup-launch-pt-dark.svg'
-                  : '/assets/brand/blonde-ai-lockup-launch-dark.svg'
-              }
-              alt="blonde AI Launch Lockup"
-              className="h-12 sm:h-16 w-auto mx-auto opacity-90"
-            />
-          </div>
-          <div className="relative inline-flex items-center justify-center gap-3 sm:gap-6 select-none">
+        <div className="relative py-6 sm:py-10 flex flex-col items-center text-center overflow-hidden">
+          {/* 30-Degree Optical Spotlight Beam Slash Across the Monumental Wordmark */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] sm:w-[760px] h-16 bg-gradient-to-r from-transparent via-[#CCFF29]/18 to-transparent -rotate-[30deg] blur-xl"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] sm:w-[640px] h-[1px] bg-gradient-to-r from-transparent via-[#CCFF29]/60 to-transparent -rotate-[30deg]"
+          />
+
+          <div className="relative z-10 inline-flex items-center justify-center gap-3 sm:gap-6 select-none">
             <img
               src="/assets/brand/blonde-ai-mark-volt.svg"
               alt="blonde AI Master Emblem"
-              className="w-14 h-14 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-2xl shadow-[0_0_40px_rgba(204,255,41,0.2)]"
+              className="w-14 h-14 sm:w-24 sm:h-24 md:w-28 md:w-28 rounded-2xl shadow-[0_0_40px_rgba(204,255,41,0.25)]"
             />
             <span className="font-sans font-extrabold tracking-[-0.04em] text-[3.5rem] sm:text-[6.5rem] md:text-[9rem] lg:text-[11rem] leading-none text-[#EAE2D3]">
               blonde
             </span>
-            <span className="px-3 py-1 sm:px-5 sm:py-2 rounded-xl sm:rounded-2xl bg-[#CCFF29] text-[#090B0A] font-mono font-bold text-xl sm:text-4xl md:text-5xl tracking-wider shadow-[0_0_35px_rgba(204,255,41,0.4)]">
+            <span className="px-3 py-1 sm:px-5 sm:py-2 rounded-xl sm:rounded-2xl bg-[#CCFF29] text-[#090B0A] font-mono font-bold text-xl sm:text-4xl md:text-5xl tracking-wider shadow-[0_0_35px_rgba(204,255,41,0.45)]">
               AI
             </span>
           </div>

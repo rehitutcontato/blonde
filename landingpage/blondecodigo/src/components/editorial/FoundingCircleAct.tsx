@@ -15,7 +15,7 @@ export function FoundingCircleAct() {
       className="relative z-10 py-20 sm:py-28 lg:py-36 mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-12"
     >
       {/* Private Invitation Ticket / Founding Room Card over the Liquid Metal Halo */}
-      <div className="relative rounded-3xl border border-[#CCFF29]/45 bg-[#090B0A]/84 backdrop-blur-xl p-6 sm:p-12 lg:p-16 shadow-[0_0_90px_rgba(11,70,53,0.45),0_30px_100px_rgba(0,0,0,0.9)] overflow-hidden">
+      <div className="relative rounded-3xl border border-[#CCFF29]/55 bg-[#090B0A]/95 backdrop-blur-2xl p-6 sm:p-12 lg:p-16 shadow-[0_0_90px_rgba(11,70,53,0.45),0_30px_100px_rgba(0,0,0,0.95)] overflow-hidden">
         {/* 30-degree Blonde Volt Spotlight Beam Accent */}
         <div
           aria-hidden="true"

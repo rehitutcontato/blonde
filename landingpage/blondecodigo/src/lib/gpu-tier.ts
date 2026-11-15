@@ -62,7 +62,8 @@ export function detectGpuQualityTier(): GpuCapabilityReport {
         if (
           renderer.includes('swiftshader') ||
           renderer.includes('llvmpipe') ||
-          renderer.includes('software')
+          renderer.includes('software') ||
+          renderer.includes('basic render')
         ) {
           isSoftwareRenderer = true;
         }

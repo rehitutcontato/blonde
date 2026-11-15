@@ -145,19 +145,14 @@ export function AaaSBroadsheetAct() {
 
           {/* Bottom Broadsheet Stamp & Direct Waitlist Entry */}
           <div className="pt-6 border-t border-[#090B0A]/15 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3.5">
               <img
                 src="/assets/brand/blonde-ai-horizontal-light.svg"
                 alt="blonde AI editorial stamp"
-                className="h-9 w-auto rounded"
+                className="h-9 w-auto rounded border border-[#090B0A]/10"
               />
-              <img
-                src="/assets/brand/blonde-ai-lockup-launch-beige.svg"
-                alt=""
-                aria-hidden="true"
-                className="h-8 w-auto hidden md:block rounded"
-              />
-              <span className="font-mono text-[11px] tracking-[0.1em] text-[#090B0A]/75 uppercase">
+              <span className="hidden sm:inline-block h-4 w-[1px] bg-[#090B0A]/20" />
+              <span className="font-mono text-[11px] tracking-[0.12em] text-[#090B0A]/80 uppercase font-semibold">
                 VISION IN · STUDIO MASTER OUT
               </span>
             </div>

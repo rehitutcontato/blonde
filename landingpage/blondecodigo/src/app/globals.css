@@ -31,10 +31,10 @@
     button,
     select,
     textarea,
-    input:not([type='checkbox'], [type='radio']),
+    input:not([type='checkbox'], [type='radio'], .sr-only),
     [role='button'],
     [role='tab'],
-    [role='switch'],
+    [role='switch']:not(.sr-only),
     nav a,
     label:has(input[type='checkbox'], input[type='radio'])
   ) {
@@ -42,8 +42,31 @@
   min-inline-size: var(--target-size);
 }
 
+/* Keep screen-reader-only switch inputs invisible even when input-switch-polyfill adds .switch / role="switch" */
+input.sr-only,
+input.switch.sr-only,
+input[switch].sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border-width: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
 /* Modern Web Guidance (switch): Native HTML switch control styling */
-input[type='checkbox'][switch] {
+input[type='checkbox'][switch],
+input.switch:not(.sr-only) {
+  --switch-accent: #ccff29;
+  --switch-background: #181e1b;
+  --switch-thumb: #eae2d3;
   accent-color: var(--color-blonde-volt, #ccff29);
   margin: 0;
   cursor: pointer;
@@ -163,6 +186,45 @@ li {
   }
   to {
     transform: scaleX(1);
+  }
+}
+
+/* Protective Editorial Reading Shield: keeps typography 100% crisp while letting Liquid Metal radiate on the margins */
+.broadsheet-reading-shield {
+  background: radial-gradient(
+    ellipse 85% 75% at 32% 50%,
+    rgba(9, 11, 10, 0.86) 0%,
+    rgba(9, 11, 10, 0.62) 58%,
+    transparent 100%
+  );
+}
+
+/* Modern Web Guidance (parallax-scroll-effects): Native CSS view-timeline parallax enhancement with feature detection */
+@supports ((animation-timeline: view()) and (animation-range: entry)) {
+  @keyframes broadsheet-layer-parallax {
+    from {
+      transform: translateY(var(--parallax-offset, 28px));
+    }
+    to {
+      transform: translateY(calc(var(--parallax-offset, 28px) * -0.5));
+    }
+  }
+
+  .broadsheet-parallax-section {
+    view-timeline: --broadsheet-section block;
+  }
+
+  .broadsheet-parallax-layer {
+    animation: broadsheet-layer-parallax linear both;
+    animation-timeline: --broadsheet-section;
+    animation-range: entry 0% exit 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .broadsheet-parallax-layer {
+    animation: none !important;
+    transform: none !important;
   }
 }
 

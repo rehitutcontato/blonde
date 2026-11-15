@@ -33,7 +33,7 @@ export function SystemImmersionGate() {
 
       notifyPreloaderState(true, false);
       setPhase('opening');
-      const exitDuration = reducedMotion ? 220 : 620;
+      const exitDuration = reducedMotion ? 200 : 500;
       window.setTimeout(() => {
         notifyPreloaderState(true, true);
         setPhase('done');

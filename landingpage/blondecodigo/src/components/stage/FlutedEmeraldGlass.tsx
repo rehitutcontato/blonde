@@ -19,15 +19,15 @@ export function FlutedEmeraldGlass({
 }: FlutedEmeraldGlassProps) {
   const bgOpacity =
     intensity === 'strong'
-      ? 'bg-[#0B4635]/78'
+      ? 'bg-[#06231A]/94'
       : intensity === 'medium'
-        ? 'bg-[#0B4635]/62'
-        : 'bg-[#0B4635]/42';
+        ? 'bg-[#07281E]/90'
+        : 'bg-[#082C21]/78';
 
   return (
     <Tag
       className={clsx(
-        'relative overflow-hidden border border-[#13634C]/65 backdrop-blur-md shadow-[0_24px_80px_rgba(9,11,10,0.72)]',
+        'relative overflow-hidden border border-[#13634C]/85 backdrop-blur-xl shadow-[0_28px_90px_rgba(9,11,10,0.88)]',
         bgOpacity,
         className
       )}

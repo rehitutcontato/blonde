@@ -221,13 +221,15 @@ export function BeforeAfterOpticalBlade() {
               src={beforeImg}
               alt="Raw unedited input footage"
               draggable={false}
-              className="w-full h-full object-cover filter saturate-[0.75] contrast-[0.92]"
+              className={`w-full h-full object-cover filter saturate-[0.72] contrast-[0.9] ${
+                mode === 'creator' ? 'object-[22%_center]' : 'object-center'
+              }`}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#090B0A]/80 via-transparent to-[#090B0A]/45" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#090B0A]/85 via-transparent to-[#090B0A]/45" />
 
             {/* Before Telemetry HUD */}
-            <div className="absolute top-2.5 left-2.5 sm:top-5 sm:left-5 flex items-center gap-1.5 sm:gap-2 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded bg-[#090B0A]/85 border border-[#9CA39E]/30 backdrop-blur-sm max-w-[46%]">
-              <span className="w-2 h-2 shrink-0 rounded-full bg-red-500/80" />
+            <div className="absolute top-2.5 left-2.5 sm:top-5 sm:left-5 flex items-center gap-1.5 sm:gap-2 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded bg-[#090B0A]/92 border border-[#9CA39E]/35 backdrop-blur-sm max-w-[46%]">
+              <span className="w-2 h-2 shrink-0 rounded-full bg-red-500/85" />
               <span className="font-mono text-[9px] sm:text-xs tracking-[0.1em] sm:tracking-[0.12em] text-[#EAE2D3] truncate">
                 {beforeBadge}
               </span>
@@ -256,12 +258,14 @@ export function BeforeAfterOpticalBlade() {
               src={afterImg}
               alt="blonde AI studio master output"
               draggable={false}
-              className="w-full h-full object-cover"
+              className={`w-full h-full object-cover ${
+                mode === 'creator' ? 'object-[68%_center]' : 'object-center'
+              }`}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#090B0A]/75 via-transparent to-[#090B0A]/30" />
 
             {/* After Telemetry HUD */}
-            <div className="absolute top-2.5 right-2.5 sm:top-5 sm:right-5 flex items-center gap-1.5 sm:gap-2 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded bg-[#0B4635]/90 border border-[#CCFF29]/60 backdrop-blur-sm shadow-lg max-w-[48%]">
+            <div className="absolute top-2.5 right-2.5 sm:top-5 sm:right-5 flex items-center gap-1.5 sm:gap-2 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded bg-[#0B4635]/95 border border-[#CCFF29]/70 backdrop-blur-sm shadow-lg max-w-[48%]">
               <span className="w-2 h-2 shrink-0 rounded-full bg-[#CCFF29] animate-pulse" />
               <span className="font-mono text-[9px] sm:text-xs tracking-[0.1em] sm:tracking-[0.12em] text-[#CCFF29] font-bold truncate">
                 {afterBadge}
@@ -270,7 +274,7 @@ export function BeforeAfterOpticalBlade() {
 
             {/* Live Vector Editorial Subtitle Burn-in Preview on After Side */}
             <div className="absolute bottom-2.5 right-2.5 sm:bottom-6 sm:right-6 max-w-[78%] sm:max-w-[75%] text-right pointer-events-none">
-              <div className="inline-block px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded bg-[#090B0A]/88 border-l-2 border-[#CCFF29] backdrop-blur-md">
+              <div className="inline-block px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded bg-[#090B0A]/92 border-l-2 border-[#CCFF29] backdrop-blur-md shadow-[0_12px_32px_rgba(0,0,0,0.65)]">
                 <p className="font-display font-extrabold uppercase tracking-tight text-xs sm:text-xl md:text-2xl text-[#EAE2D3] leading-none">
                   {mode === 'creator'
                     ? t.act3.i2.creatorOverlayTitle
@@ -293,8 +297,12 @@ export function BeforeAfterOpticalBlade() {
             style={{ left: `${split}%` }}
             className="pointer-events-none absolute inset-y-0 z-20 -translate-x-1/2 flex flex-col items-center justify-center"
           >
-            {/* 2px Blonde Volt Glowing Blade Line */}
-            <div className="w-[2px] h-full bg-[#CCFF29] shadow-[0_0_18px_#CCFF29,0_0_4px_#FFFFFF]" />
+            {/* Subtle Optical Refraction Halo + 2px Blonde Volt Glowing Blade Line */}
+            <div
+              aria-hidden="true"
+              className="absolute inset-y-0 w-8 bg-gradient-to-r from-transparent via-[#CCFF29]/20 to-transparent blur-[2px]"
+            />
+            <div className="relative w-[2px] h-full bg-[#CCFF29] shadow-[0_0_18px_#CCFF29,0_0_4px_#FFFFFF]" />
 
             {/* Tactile Chrome & Volt Handle (44x44px circle centered vertically, label shown on sm+ so mobile never overlaps bottom card) */}
             <div className="absolute top-1/2 -translate-y-1/2 flex flex-col items-center gap-1.5">

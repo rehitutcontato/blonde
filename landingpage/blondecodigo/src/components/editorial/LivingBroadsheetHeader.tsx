@@ -241,8 +241,8 @@ export function LivingBroadsheetHeader() {
         data-testid="living-broadsheet-header"
         className={`safe-top-header fixed top-0 inset-x-0 z-40 transition-all duration-300 ${
           scrolled
-            ? 'bg-[#090B0A]/88 backdrop-blur-xl border-b border-[#EAE2D3]/12 py-2.5 sm:py-3'
-            : 'bg-gradient-to-b from-[#090B0A]/90 via-[#090B0A]/45 to-transparent border-b border-[#EAE2D3]/[0.08] py-3 sm:py-4'
+            ? 'bg-[#090B0A]/96 backdrop-blur-2xl border-b border-[#EAE2D3]/15 shadow-[0_14px_44px_rgba(0,0,0,0.88)] py-2.5 sm:py-3'
+            : 'bg-gradient-to-b from-[#090B0A]/95 via-[#090B0A]/70 to-transparent border-b border-[#EAE2D3]/[0.08] py-3 sm:py-4'
         }`}
       >
         <div className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-12 flex items-center justify-between gap-2 sm:gap-3">
