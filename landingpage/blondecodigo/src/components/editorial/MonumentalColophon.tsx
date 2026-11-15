@@ -46,7 +46,7 @@ export function MonumentalColophon() {
                   aria-current={isActive ? 'true' : undefined}
                   data-testid={`lang-btn-footer-${item.code}`}
                   onClick={() => handleLocaleClick(item.code)}
-                  className={`min-h-[36px] px-3 py-1 rounded-full font-mono text-xs tracking-[0.1em] uppercase border transition-all ${
+                  className={`min-h-[44px] min-w-[44px] px-3.5 py-2 rounded-full font-mono text-xs tracking-[0.1em] uppercase border transition-all ${
                     isActive
                       ? 'bg-[#CCFF29] text-[#090B0A] border-[#CCFF29] font-bold'
                       : 'bg-[#121614] text-[#9CA39E] border-[#EAE2D3]/15 hover:text-[#EAE2D3]'
@@ -60,20 +60,25 @@ export function MonumentalColophon() {
 
           {/* Sound Toggle & WhatsApp Genesis Circle Link */}
           <div className="md:col-span-6 flex flex-wrap md:justify-end items-center gap-3">
-            <button
-              type="button"
+            <label
               role="switch"
               aria-checked={soundEnabled}
               data-testid="footer-sound-toggle"
-              onClick={toggleSound}
-              className={`min-h-[38px] px-4 py-1.5 rounded-full border font-mono text-xs tracking-[0.12em] uppercase transition-all ${
+              className={`min-h-[44px] min-w-[44px] px-4 py-2 rounded-full border font-mono text-xs tracking-[0.12em] uppercase transition-all inline-flex items-center gap-2 cursor-pointer select-none ${
                 soundEnabled
                   ? 'border-[#CCFF29] bg-[#CCFF29]/15 text-[#CCFF29]'
                   : 'border-[#EAE2D3]/20 bg-[#121614] text-[#9CA39E] hover:text-[#EAE2D3]'
               }`}
             >
-              [ {soundEnabled ? t.nav.soundOn : t.nav.soundOff} ]
-            </button>
+              <input
+                type="checkbox"
+                {...({ switch: '' } as React.InputHTMLAttributes<HTMLInputElement>)}
+                checked={soundEnabled}
+                onChange={toggleSound}
+                aria-label={soundEnabled ? t.nav.soundOn : t.nav.soundOff}
+              />
+              <span>[ {soundEnabled ? t.nav.soundOn : t.nav.soundOff} ]</span>
+            </label>
 
             <a
               href={WHATSAPP_WAITLIST_URL}
@@ -82,7 +87,7 @@ export function MonumentalColophon() {
               data-cursor="waitlist"
               data-testid="footer-waitlist-cta"
               onClick={() => playWaitlistPulse()}
-              className="min-h-[38px] px-4 py-1.5 rounded-full bg-[#0B4635] hover:bg-[#13634C] border border-[#CCFF29]/50 text-[#CCFF29] font-mono text-xs tracking-[0.12em] uppercase inline-flex items-center gap-2 transition-colors"
+              className="min-h-[44px] min-w-[44px] px-4 py-2 rounded-full bg-[#0B4635] hover:bg-[#13634C] border border-[#CCFF29]/50 text-[#CCFF29] font-mono text-xs tracking-[0.12em] uppercase inline-flex items-center gap-2 transition-colors"
             >
               <span>{t.colophon.whatsappCircleLabel}</span>
             </a>
@@ -91,6 +96,17 @@ export function MonumentalColophon() {
 
         {/* Monumental Full-Width Lockup & Wordmark with 30-degree Blonde Volt Beam Slash */}
         <div className="relative py-4 sm:py-6 flex flex-col items-center text-center overflow-hidden">
+          <div className="mb-6">
+            <img
+              src={
+                locale === 'pt'
+                  ? '/assets/brand/blonde-ai-lockup-launch-pt-dark.svg'
+                  : '/assets/brand/blonde-ai-lockup-launch-dark.svg'
+              }
+              alt="blonde AI Launch Lockup"
+              className="h-12 sm:h-16 w-auto mx-auto opacity-90"
+            />
+          </div>
           <div className="relative inline-flex items-center justify-center gap-3 sm:gap-6 select-none">
             <img
               src="/assets/brand/blonde-ai-mark-volt.svg"

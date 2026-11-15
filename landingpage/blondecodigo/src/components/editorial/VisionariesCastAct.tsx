@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useLocale } from '@/lib/i18n/dictionary';
+import { OpticalTelemetryText } from '@/components/interactions/OpticalTelemetryText';
 
 export function VisionariesCastAct() {
   const { t } = useLocale();
@@ -15,7 +16,7 @@ export function VisionariesCastAct() {
       {/* Top Broadsheet Header */}
       <div className="space-y-4">
         <div className="flex items-center justify-between pb-4 border-b border-[#EAE2D3]/20 font-mono text-xs tracking-[0.14em] text-[#CCFF29] uppercase">
-          <span>{t.act5.kicker}</span>
+          <OpticalTelemetryText text={t.act5.kicker} />
           <span className="text-[#9CA39E]">DOSSIER // ICP ARCHITECTURE</span>
         </div>
 

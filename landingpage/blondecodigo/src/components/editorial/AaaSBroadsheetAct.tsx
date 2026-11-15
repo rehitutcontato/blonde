@@ -5,6 +5,7 @@ import { useLocale } from '@/lib/i18n/dictionary';
 import { useStudioAudio } from '@/lib/audio/StudioSoundEngine';
 import { BeforeAfterOpticalBlade } from '@/components/interactions/BeforeAfterOpticalBlade';
 import { MagneticWaitlistButton } from '@/components/interactions/MagneticWaitlistButton';
+import { OpticalTelemetryText } from '@/components/interactions/OpticalTelemetryText';
 
 export function AaaSBroadsheetAct() {
   const { t } = useLocale();
@@ -60,9 +61,10 @@ export function AaaSBroadsheetAct() {
                 aria-hidden="true"
                 className="w-6 h-6"
               />
-              <span className="font-mono text-xs font-bold tracking-[0.14em] text-[#0B4635] uppercase">
-                {t.act3.kicker}
-              </span>
+              <OpticalTelemetryText
+                text={t.act3.kicker}
+                className="font-mono text-xs font-bold tracking-[0.14em] text-[#0B4635] uppercase"
+              />
             </div>
             <div className="font-mono text-[11px] tracking-[0.14em] text-[#090B0A]/65 uppercase">
               ACT III // LIVING BROADSHEET FOLIO
@@ -143,11 +145,17 @@ export function AaaSBroadsheetAct() {
 
           {/* Bottom Broadsheet Stamp & Direct Waitlist Entry */}
           <div className="pt-6 border-t border-[#090B0A]/15 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               <img
                 src="/assets/brand/blonde-ai-horizontal-light.svg"
                 alt="blonde AI editorial stamp"
                 className="h-9 w-auto rounded"
+              />
+              <img
+                src="/assets/brand/blonde-ai-lockup-launch-beige.svg"
+                alt=""
+                aria-hidden="true"
+                className="h-8 w-auto hidden md:block rounded"
               />
               <span className="font-mono text-[11px] tracking-[0.1em] text-[#090B0A]/75 uppercase">
                 VISION IN · STUDIO MASTER OUT

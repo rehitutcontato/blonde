@@ -73,15 +73,13 @@ async function runE2E() {
       pageErrors.push(String(err));
     });
 
-    await page.goto(BASE_URL, { waitUntil: 'networkidle' });
+    await page.goto(BASE_URL, { waitUntil: 'domcontentloaded' });
 
     // 1. Preloader Verification
-    const preloaderVisible = await page
-      .locator('[data-testid="system-immersion-gate"]')
-      .isVisible();
-    assert.ok(preloaderVisible, 'Preloader should be visible on initial entry');
-    await page.locator('[data-testid="preloader-enter-sound"]').click();
-    await page.waitForTimeout(800);
+    const preloaderBtn = page.locator('[data-testid="preloader-enter-sound"]');
+    await preloaderBtn.waitFor({ state: 'visible', timeout: 5000 });
+    await preloaderBtn.click({ force: true });
+    await page.waitForTimeout(850);
     const preloaderCount = await page
       .locator('[data-testid="system-immersion-gate"]')
       .count();
@@ -198,10 +196,57 @@ async function runE2E() {
       console.log(`✔ Verified zero horizontal overflow across all 6 languages on ${vp.name}.`);
     }
 
-    // 7. Mobile Navigation Drawer & Toggles on 390x844
+    // 7. Mobile Navigation Drawer (<dialog>), On-Screen Geometry, Swipe-to-Dismiss & Touch Targets on 390x844
     await page.setViewportSize({ width: 390, height: 844 });
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.waitForTimeout(200);
+
+    // Check Interaction #2 and Interaction #4 mobile geometry (no overlap / overflow)
+    const i2Geometry = await page.evaluate(() => {
+      const root = document.querySelector('[data-testid="interaction-2-optical-blade"]');
+      const stage = root?.querySelector('[data-testid="i2-slider-stage"]');
+      const tablist = root?.querySelector('[role="tablist"]');
+      const handle = stage?.querySelector('.w-11.h-11');
+      const card = stage?.querySelector('[data-testid="i2-after-layer"] .bottom-2\\.5');
+      const rootR = root?.getBoundingClientRect();
+      const tabR = tablist?.getBoundingClientRect();
+      const handleR = handle?.getBoundingClientRect();
+      const cardR = card?.getBoundingClientRect();
+      return {
+        tablistFits: tabR && rootR ? tabR.width <= rootR.width + 2 : false,
+        noHandleOverlap: handleR && cardR ? handleR.bottom < cardR.top : false,
+      };
+    });
+    assert.ok(i2Geometry.tablistFits, 'Interaction #2 tablist must not overflow container width on mobile');
+    assert.ok(i2Geometry.noHandleOverlap, 'Interaction #2 handle must not overlap bottom subtitle card on mobile');
+
+    const i4Geometry = await page.evaluate(() => {
+      const stage = document.querySelector('[data-testid="i4-loupe-stage"]');
+      const stageR = stage?.getBoundingClientRect();
+      const loupeRing = stage?.querySelector('.z-20.rounded-full');
+      const loupeR = loupeRing?.getBoundingClientRect();
+      const centerCard = stage?.querySelector('[data-testid="i4-vector-layer"] .top-1\\/2');
+      const centerR = centerCard?.getBoundingClientRect();
+      const topBadge = stage?.querySelector('[data-testid="i4-vector-layer"] .top-2');
+      const topR = topBadge?.getBoundingClientRect();
+      const bottomBadge = stage?.querySelector('[data-testid="i4-vector-layer"] .bottom-2');
+      const bottomR = bottomBadge?.getBoundingClientRect();
+      return {
+        loupeFitsStage: loupeR && stageR ? loupeR.height < stageR.height : false,
+        noTopOverlap: topR && centerR ? topR.bottom < centerR.top : false,
+        noBottomOverlap: centerR && bottomR ? centerR.bottom < bottomR.top : false,
+      };
+    });
+    assert.ok(i4Geometry.loupeFitsStage, 'Interaction #4 loupe ring must fit inside stage height on mobile');
+    assert.ok(i4Geometry.noTopOverlap, 'Interaction #4 center vector card must not overlap top HUD badge on mobile');
+    assert.ok(i4Geometry.noBottomOverlap, 'Interaction #4 center vector card must not overlap bottom HUD badge on mobile');
+    console.log('✔ Verified Interaction #2 and Interaction #4 mobile bounding-box geometry (zero overlap).');
+
+    // Verify native <input type="checkbox" switch> elements and >= 44x44px touch targets
+    const switchCount = await page.evaluate(
+      () => document.querySelectorAll('input[type="checkbox"][switch]').length
+    );
+    assert.ok(switchCount >= 3, `Expected at least 3 <input type="checkbox" switch> elements, got ${switchCount}`);
 
     const mobileTrigger = page.locator('[data-testid="mobile-menu-trigger"]');
     assert.ok(await mobileTrigger.isVisible(), 'Mobile menu trigger must be visible on 390px');
@@ -211,11 +256,20 @@ async function runE2E() {
     await page.waitForTimeout(350);
     assert.equal(await mobileTrigger.getAttribute('aria-expanded'), 'true');
 
-    const drawerOpen = await page.evaluate(() => {
+    const drawerState = await page.evaluate(() => {
       const dlg = document.getElementById('mobile-navigation-drawer');
-      return Boolean(dlg && dlg.hasAttribute('open'));
+      const scroller = dlg?.querySelector('.Drawer-scroller');
+      const sheet = dlg?.querySelector('.Drawer-sheet');
+      const sheetR = sheet?.getBoundingClientRect();
+      return {
+        open: Boolean(dlg && dlg.hasAttribute('open')),
+        scrollLeft: scroller ? scroller.scrollLeft : -1,
+        sheetRight: sheetR ? sheetR.right : 0,
+      };
     });
-    assert.ok(drawerOpen, 'Mobile <dialog> drawer must have [open] attribute when opened');
+    assert.ok(drawerState.open, 'Mobile <dialog> drawer must have [open] attribute when opened');
+    assert.equal(drawerState.scrollLeft, 0, 'Mobile drawer scroller must settle at scrollLeft === 0 when opened');
+    assert.ok(drawerState.sheetRight > 250, `Mobile drawer sheet must be visible on-screen (got right=${drawerState.sheetRight})`);
 
     // Toggle sound inside mobile drawer
     const drawerSoundSwitch = page.locator('[data-testid="mobile-drawer-sound-switch"]');
@@ -232,11 +286,26 @@ async function runE2E() {
     );
     assert.equal(mobileLang, 'pt', 'Mobile drawer language button must switch locale to PT');
 
-    // Close mobile drawer via close button
+    // Test swipe-to-dismiss via scroll-snap scroller
+    await page.evaluate(() => {
+      const scroller = document.querySelector('#mobile-navigation-drawer .Drawer-scroller');
+      scroller?.scrollTo({ left: scroller.scrollWidth, behavior: 'instant' });
+    });
+    await page.waitForTimeout(350);
+    assert.equal(
+      await mobileTrigger.getAttribute('aria-expanded'),
+      'false',
+      'Mobile drawer must close automatically when swiped/scrolled to dismiss target'
+    );
+
+    // Re-open and close via close button
+    await mobileTrigger.click();
+    await page.waitForTimeout(350);
+    assert.equal(await mobileTrigger.getAttribute('aria-expanded'), 'true');
     await page.locator('[data-testid="mobile-drawer-close"]').click();
     await page.waitForTimeout(350);
     assert.equal(await mobileTrigger.getAttribute('aria-expanded'), 'false');
-    console.log('✔ Mobile Navigation Drawer (<dialog>), sound switch, and mobile language selector verified.');
+    console.log('✔ Mobile Navigation Drawer (<dialog>), on-screen geometry, swipe-to-dismiss, sound switch, and language selector verified.');
 
     assert.equal(
       consoleErrors.length,

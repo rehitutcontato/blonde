@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useLocale } from '@/lib/i18n/dictionary';
+import { OpticalTelemetryText } from '@/components/interactions/OpticalTelemetryText';
 
 export function DiagnosisNewspaperAct() {
   const { t } = useLocale();
@@ -14,7 +15,7 @@ export function DiagnosisNewspaperAct() {
     >
       {/* Top Broadsheet Edition Header */}
       <div className="flex items-center justify-between pb-4 mb-10 sm:mb-14 border-b border-[#EAE2D3]/20 font-mono text-xs tracking-[0.14em] text-[#CCFF29] uppercase">
-        <span>{t.act2.kicker}</span>
+        <OpticalTelemetryText text={t.act2.kicker} />
         <span className="text-[#9CA39E]">ACT II // LIVING BROADSHEET</span>
       </div>
 

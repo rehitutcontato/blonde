@@ -9,9 +9,17 @@ export interface ScrollBridgeState {
   smoothMouseX: number; // lerped (0.06) NDC -1..+1
   smoothMouseY: number; // lerped (0.06) NDC -1..+1
   pointerFine: boolean;
+  preloaderOpening: boolean;
   preloaderDone: boolean;
   activeAct: number; // 1..7
 }
+
+type PreloaderListener = (state: {
+  opening: boolean;
+  done: boolean;
+}) => void;
+
+const preloaderListeners = new Set<PreloaderListener>();
 
 export const scrollBridge: ScrollBridgeState = {
   scrollY: 0,
@@ -22,9 +30,23 @@ export const scrollBridge: ScrollBridgeState = {
   smoothMouseX: 0,
   smoothMouseY: 0,
   pointerFine: false,
+  preloaderOpening: false,
   preloaderDone: false,
   activeAct: 1,
 };
+
+export function notifyPreloaderState(opening: boolean, done: boolean): void {
+  scrollBridge.preloaderOpening = opening;
+  scrollBridge.preloaderDone = done;
+  preloaderListeners.forEach((fn) => fn({ opening, done }));
+}
+
+export function subscribePreloaderState(fn: PreloaderListener): () => void {
+  preloaderListeners.add(fn);
+  return () => {
+    preloaderListeners.delete(fn);
+  };
+}
 
 export function computeActiveAct(progress: number): number {
   if (progress < 0.14) return 1;

@@ -34,6 +34,7 @@ const FRAGMENT_SHADER = /* glsl */ `
   uniform float uHasMatCap;
   uniform float uEnableGlass;
   uniform float uEnableBloom;
+  uniform float uEntryZoom;
 
   // Smooth minimum (polynomial smin) for real liquid mercury fusion
   float smin(float a, float b, float k) {
@@ -200,13 +201,13 @@ const FRAGMENT_SHADER = /* glsl */ `
     float ridge = sin(vUv.x * flutes * 6.28318);
     vec2 refractedUv = aspectUv + vec2(ridge * 0.022 * glassMask, ridge * 0.004 * glassMask);
 
-    // Camera setup with subtle gaze parallax (±0.28 units per como-criar/02)
+    // Camera setup with subtle gaze parallax (±0.28 units per como-criar/02) + Preloader optical dolly-out (FOV 55 -> 42 per como-criar/01)
     vec3 ro = vec3(uMouseNDC.x * 0.22, uMouseNDC.y * 0.18, 2.85);
     vec3 ta = vec3(0.0, 0.0, 0.0);
     vec3 ww = normalize(ta - ro);
     vec3 uu = normalize(cross(ww, vec3(0.0, 1.0, 0.0)));
     vec3 vv = normalize(cross(uu, ww));
-    vec3 rd = normalize(refractedUv.x * uu + refractedUv.y * vv + 1.55 * ww);
+    vec3 rd = normalize(refractedUv.x * uu + refractedUv.y * vv + uEntryZoom * ww);
 
     // Background: Obsidian Noir (#090B0A) + 30deg Blonde Volt (#CCFF29) Volumetric Beam + Royal Emerald (#0B4635) ambient
     vec3 obsidian = vec3(0.035, 0.043, 0.039);
@@ -307,6 +308,8 @@ const FRAGMENT_SHADER = /* glsl */ `
 
 export function PersistentLiquidCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const fallbackWrapRef = useRef<HTMLDivElement>(null);
+  const morphVideoWrapRef = useRef<HTMLDivElement>(null);
   const [gpuReport, setGpuReport] = useState<GpuCapabilityReport | null>(null);
   const [forceVideoFallback, setForceVideoFallback] = useState(false);
 
@@ -317,6 +320,27 @@ export function PersistentLiquidCanvas() {
       setForceVideoFallback(true);
     }
   }, []);
+
+  // CSS Scroll Parallax & Video Crossfade when in Video Fallback Mode (como-criar/08)
+  useEffect(() => {
+    if (!forceVideoFallback) return;
+    let rafId = 0;
+    const updateFallbackParallax = () => {
+      const sp = scrollBridge.scrollProgress;
+      if (fallbackWrapRef.current) {
+        const shiftY = -(sp * 42).toFixed(1);
+        fallbackWrapRef.current.style.transform = `translate3d(0, ${shiftY}px, 0) scale(1.06)`;
+      }
+      if (morphVideoWrapRef.current) {
+        // Crossfade from hero-liquid-lens-loop.mp4 (Act I) to liquid-metal-b-morph.mp4 (Acts II-VI)
+        const morphAlpha = Math.max(0, Math.min(1, (sp - 0.14) / 0.12));
+        morphVideoWrapRef.current.style.opacity = morphAlpha.toFixed(2);
+      }
+      rafId = window.requestAnimationFrame(updateFallbackParallax);
+    };
+    rafId = window.requestAnimationFrame(updateFallbackParallax);
+    return () => window.cancelAnimationFrame(rafId);
+  }, [forceVideoFallback]);
 
   useEffect(() => {
     if (!gpuReport || forceVideoFallback || !canvasRef.current) return;
@@ -361,6 +385,7 @@ export function PersistentLiquidCanvas() {
       uHasMatCap: { value: 0.0 },
       uEnableGlass: { value: gpuReport.enableGlassRefraction ? 1.0 : 0.0 },
       uEnableBloom: { value: gpuReport.enableBloom ? 1.0 : 0.0 },
+      uEntryZoom: { value: 1.18 },
     };
 
     const textureLoader = new THREE.TextureLoader();
@@ -439,6 +464,12 @@ export function PersistentLiquidCanvas() {
         (scrollBridge.targetMouseY - scrollBridge.smoothMouseY) * 0.06;
 
       uniforms.uTime.value = (now - startTime) * 0.001;
+      const targetZoom =
+        scrollBridge.preloaderOpening || scrollBridge.preloaderDone
+          ? 1.55
+          : 1.18;
+      uniforms.uEntryZoom.value +=
+        (targetZoom - uniforms.uEntryZoom.value) * 0.065;
       uniforms.uScrollProgress.value +=
         (scrollBridge.scrollProgress - uniforms.uScrollProgress.value) * 0.12;
       uniforms.uScrollVelocity.value +=
@@ -485,7 +516,10 @@ export function PersistentLiquidCanvas() {
 
       {/* Pre-rendered 3D Studio Video Fallback (Mobile Light / Low GPU / Reduced Motion per como-criar/08) */}
       {forceVideoFallback && (
-        <div className="relative w-full h-full bg-[#090B0A]">
+        <div
+          ref={fallbackWrapRef}
+          className="relative w-full h-full bg-[#090B0A] will-change-transform"
+        >
           <video
             autoPlay
             muted
@@ -500,6 +534,26 @@ export function PersistentLiquidCanvas() {
               type="video/mp4"
             />
           </video>
+          <div
+            ref={morphVideoWrapRef}
+            style={{ opacity: 0 }}
+            className="absolute inset-0 transition-opacity duration-300"
+          >
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              poster="/assets/images/liquid-metal-sculpt-b.jpg"
+              className="w-full h-full object-cover opacity-75 mix-blend-screen"
+            >
+              <source
+                src="/assets/videos/liquid-metal-b-morph.mp4"
+                type="video/mp4"
+              />
+            </video>
+          </div>
           <div className="absolute inset-0 bg-gradient-to-b from-[#090B0A]/40 via-transparent to-[#090B0A]/85" />
         </div>
       )}

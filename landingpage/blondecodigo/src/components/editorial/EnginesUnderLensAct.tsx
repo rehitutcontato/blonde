@@ -4,6 +4,7 @@ import React from 'react';
 import { useLocale } from '@/lib/i18n/dictionary';
 import { FlutedEmeraldGlass } from '@/components/stage/FlutedEmeraldGlass';
 import { VectorVsMeltLoupe } from '@/components/interactions/VectorVsMeltLoupe';
+import { OpticalTelemetryText } from '@/components/interactions/OpticalTelemetryText';
 
 export function EnginesUnderLensAct() {
   const { t } = useLocale();
@@ -16,9 +17,17 @@ export function EnginesUnderLensAct() {
     >
       {/* Section Header */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between pb-4 border-b border-[#EAE2D3]/20 font-mono text-xs tracking-[0.14em] text-[#CCFF29] uppercase">
-          <span>{t.act4.kicker}</span>
-          <span className="text-[#9CA39E]">ROYAL EMERALD REFRACTION // Z-1</span>
+        <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[#EAE2D3]/20 font-mono text-xs tracking-[0.14em] text-[#CCFF29] uppercase">
+          <OpticalTelemetryText text={t.act4.kicker} />
+          <div className="flex items-center gap-3">
+            <img
+              src="/assets/brand/blonde-ai-lockup-launch-royal.svg"
+              alt=""
+              aria-hidden="true"
+              className="h-7 w-auto rounded border border-[#CCFF29]/25 hidden sm:block"
+            />
+            <span className="text-[#9CA39E]">ROYAL EMERALD REFRACTION // Z-1</span>
+          </div>
         </div>
 
         <h2 className="font-display font-extrabold uppercase text-[#EAE2D3] act-headline-scale pt-2">

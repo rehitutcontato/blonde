@@ -38,12 +38,14 @@ const requiredCodeFiles = [
   'src/components/interactions/VectorVsMeltLoupe.tsx',
   'src/components/interactions/MagneticWaitlistButton.tsx',
   'src/components/interactions/ViewfinderReticle.tsx',
+  'src/components/interactions/OpticalTelemetryText.tsx',
   'src/lib/audio/StudioSoundEngine.ts',
   'src/lib/i18n/dictionary.ts',
   'src/lib/phase-gate.ts',
   'src/lib/gpu-tier.ts',
   'src/tokens/landing-tokens.json',
   'src/tokens/copy-and-routes-manifest.json',
+  'vercel.json',
 ];
 
 for (const f of requiredCodeFiles) {
@@ -165,8 +167,10 @@ const canvasSrc = fs.readFileSync(
 assert.ok(
   canvasSrc.includes('smin(') &&
     canvasSrc.includes('matcap-liquid-chrome-volt.jpg') &&
-    canvasSrc.includes('ACESFilmicToneMapping'),
-  'PersistentLiquidCanvas missing SDF smin, matcap texture, or ACESFilmicToneMapping'
+    canvasSrc.includes('ACESFilmicToneMapping') &&
+    canvasSrc.includes('uEntryZoom') &&
+    canvasSrc.includes('liquid-metal-b-morph.mp4'),
+  'PersistentLiquidCanvas missing SDF smin, matcap texture, ACESFilmicToneMapping, uEntryZoom, or dual-video fallback'
 );
 
 console.log('✔ Verified Interactions #2, #4, #6 (8 Web Audio recipes + compressor) and WebGL SDF shader.');
@@ -180,8 +184,9 @@ assert.ok(
   headerSrc.includes('<dialog') &&
     headerSrc.includes('mobile-navigation-drawer') &&
     headerSrc.includes('role="switch"') &&
+    headerSrc.includes('input-switch-polyfill') &&
     headerSrc.includes('aria-expanded'),
-  'LivingBroadsheetHeader missing mobile <dialog> drawer or accessible switch/aria attributes'
+  'LivingBroadsheetHeader missing mobile <dialog> drawer, input-switch-polyfill, or accessible switch/aria attributes'
 );
 console.log('✔ Verified Mobile <dialog> Navigation Drawer and accessible toggle controls.');
 console.log('\n🎉 ALL QA STRUCTURAL & CONTRACT CHECKS PASSED!');

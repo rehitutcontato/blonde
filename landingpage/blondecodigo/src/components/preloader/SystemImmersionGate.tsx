@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocale } from '@/lib/i18n/dictionary';
 import { useStudioAudio } from '@/lib/audio/StudioSoundEngine';
-import { scrollBridge } from '@/lib/scroll-bridge';
+import { notifyPreloaderState } from '@/lib/scroll-bridge';
 
 const INTRO_SEEN_KEY = 'blonde_intro_seen';
 
@@ -31,10 +31,11 @@ export function SystemImmersionGate() {
         window.sessionStorage.setItem(INTRO_SEEN_KEY, '1');
       } catch {}
 
+      notifyPreloaderState(true, false);
       setPhase('opening');
       const exitDuration = reducedMotion ? 220 : 620;
       window.setTimeout(() => {
-        scrollBridge.preloaderDone = true;
+        notifyPreloaderState(true, true);
         setPhase('done');
       }, exitDuration);
     },
@@ -128,8 +129,8 @@ export function SystemImmersionGate() {
       className={`fixed inset-0 z-50 flex flex-col justify-between bg-[#090B0A] text-[#EAE2D3] px-5 py-6 sm:px-10 sm:py-8 overflow-hidden transition-all ${
         phase === 'opening'
           ? reducedMotion
-            ? 'opacity-0 duration-200'
-            : 'opacity-0 backdrop-blur-0 duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]'
+            ? 'pointer-events-none opacity-0 duration-200'
+            : 'pointer-events-none opacity-0 backdrop-blur-0 duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]'
           : 'opacity-100'
       }`}
     >

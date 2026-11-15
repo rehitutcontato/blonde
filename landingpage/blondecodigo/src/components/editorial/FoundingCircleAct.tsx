@@ -3,6 +3,7 @@
 import React from 'react';
 import { useLocale } from '@/lib/i18n/dictionary';
 import { MagneticWaitlistButton } from '@/components/interactions/MagneticWaitlistButton';
+import { OpticalTelemetryText } from '@/components/interactions/OpticalTelemetryText';
 
 export function FoundingCircleAct() {
   const { t } = useLocale();
@@ -44,7 +45,7 @@ export function FoundingCircleAct() {
           <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[#EAE2D3]/15 font-mono text-xs tracking-[0.14em] text-[#CCFF29] uppercase">
             <span className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#CCFF29] animate-pulse" />
-              <span>{t.act6.kicker}</span>
+              <OpticalTelemetryText text={t.act6.kicker} />
             </span>
             <span className="text-[#EAE2D3]/75">MODE B // PRIVATE CIRCLE</span>
           </div>

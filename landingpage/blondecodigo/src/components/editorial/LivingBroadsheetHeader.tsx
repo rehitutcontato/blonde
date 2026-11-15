@@ -26,6 +26,20 @@ export function LivingBroadsheetHeader() {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const sheetRef = useRef<HTMLElement>(null);
   const openBtnRef = useRef<HTMLButtonElement>(null);
+  const hasSettledOpenRef = useRef(false);
+  const isClosingRef = useRef(false);
+
+  // Modern Web Guidance (switch): Conditionally load input-switch-polyfill when native switch attribute is unsupported
+  useEffect(() => {
+    if (
+      typeof window !== 'undefined' &&
+      typeof HTMLInputElement !== 'undefined' &&
+      !('switch' in HTMLInputElement.prototype)
+    ) {
+      const polyfillUrl = '/vendor/input-switch-polyfill.js';
+      import(/* webpackIgnore: true */ polyfillUrl).catch(() => {});
+    }
+  }, []);
 
   useEffect(() => {
     const onScroll = () => {
@@ -36,13 +50,28 @@ export function LivingBroadsheetHeader() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Modern Web Guidance: Top-layer <dialog> Navigation Drawer with scroll-snap & IntersectionObserver
+  const finalizeClose = useCallback(() => {
+    const drawer = dialogRef.current;
+    hasSettledOpenRef.current = false;
+    isClosingRef.current = false;
+    setMobileMenuOpen(false);
+    if (drawer && drawer.open) {
+      drawer.close();
+    }
+    openBtnRef.current?.setAttribute('aria-expanded', 'false');
+  }, []);
+
+  // Modern Web Guidance (navigation-drawer): Top-layer <dialog> with scroll-snap & IntersectionObserver
   const openDrawer = useCallback(async () => {
     const drawer = dialogRef.current;
     const scroller = scrollerRef.current;
-    if (!drawer || !scroller) return;
+    const sheet = sheetRef.current;
+    if (!drawer || !scroller || !sheet) return;
 
     playShutter();
+    hasSettledOpenRef.current = false;
+    isClosingRef.current = false;
+
     if (!drawer.open) {
       try {
         drawer.showModal();
@@ -50,40 +79,68 @@ export function LivingBroadsheetHeader() {
         drawer.setAttribute('open', '');
       }
     }
+
     setMobileMenuOpen(true);
+    openBtnRef.current?.setAttribute('aria-expanded', 'true');
+    drawer.style.setProperty('--drawer-backdrop', '1');
 
     if (
       typeof CSS !== 'undefined' &&
       !CSS.supports('scroll-initial-target', 'nearest')
     ) {
-      scroller.scrollTo({ left: scroller.offsetWidth, behavior: 'instant' as ScrollBehavior });
-      await new Promise<void>((r) =>
-        window.requestAnimationFrame(() => window.requestAnimationFrame(() => r()))
-      );
+      scroller.scrollTo({
+        left: scroller.offsetWidth,
+        behavior: 'instant' as ScrollBehavior,
+      });
     }
 
+    // Wait two animation frames so initial top-layer layout & scroll-initial-target commit before scrolling to 0
+    await new Promise<void>((r) =>
+      window.requestAnimationFrame(() =>
+        window.requestAnimationFrame(() => r())
+      )
+    );
+
     scroller.scrollTo({ left: 0, behavior: 'auto' });
+
+    // Ensure drawer settles at scrollLeft === 0 and arm swipe-to-dismiss observer
+    window.setTimeout(() => {
+      if (!isClosingRef.current && drawer.open) {
+        if (scroller.scrollLeft > 4) {
+          scroller.scrollTo({
+            left: 0,
+            behavior: 'instant' as ScrollBehavior,
+          });
+        }
+        drawer.style.setProperty('--drawer-backdrop', '1');
+        hasSettledOpenRef.current = true;
+      }
+    }, 240);
   }, [playShutter]);
 
   const closeDrawer = useCallback(() => {
     const drawer = dialogRef.current;
     const scroller = scrollerRef.current;
-    if (!drawer) return;
+    if (!drawer || !drawer.open) {
+      setMobileMenuOpen(false);
+      return;
+    }
 
     playShutter();
+    isClosingRef.current = true;
+    hasSettledOpenRef.current = true;
     setMobileMenuOpen(false);
+    openBtnRef.current?.setAttribute('aria-expanded', 'false');
 
     if (scroller && scroller.offsetWidth > 0) {
       scroller.scrollTo({ left: scroller.offsetWidth, behavior: 'auto' });
       window.setTimeout(() => {
-        if (drawer.open) {
-          drawer.close();
-        }
+        finalizeClose();
       }, 260);
-    } else if (drawer.open) {
-      drawer.close();
+    } else {
+      finalizeClose();
     }
-  }, [playShutter]);
+  }, [playShutter, finalizeClose]);
 
   const toggleMobileMenu = useCallback(() => {
     if (mobileMenuOpen) {
@@ -99,31 +156,47 @@ export function LivingBroadsheetHeader() {
     const sheet = sheetRef.current;
     if (!drawer || !scroller || !sheet) return;
 
-    // Fallback for browsers without scroll-driven animation-timeline
-    let cleanupScroll: (() => void) | undefined;
-    if (
-      typeof CSS !== 'undefined' &&
-      !CSS.supports('animation-timeline: scroll()')
-    ) {
-      const handleScroll = () => {
-        const w = Math.max(sheet.offsetWidth, 1);
-        const ratio = Math.max(0, Math.min(1, 1 - scroller.scrollLeft / w));
+    const handleScroll = () => {
+      const w = Math.max(sheet.offsetWidth, 1);
+      const ratio = Math.max(0, Math.min(1, 1 - scroller.scrollLeft / w));
+      if (
+        typeof CSS !== 'undefined' &&
+        !CSS.supports('animation-timeline: scroll()')
+      ) {
         drawer.style.setProperty('--drawer-backdrop', String(ratio));
-      };
-      scroller.addEventListener('scroll', handleScroll, { passive: true });
-      cleanupScroll = () => scroller.removeEventListener('scroll', handleScroll);
-    }
+      }
+      // Swipe-to-dismiss settle check once the drawer has opened
+      if (
+        hasSettledOpenRef.current &&
+        drawer.open &&
+        scroller.scrollLeft >= w - 4
+      ) {
+        finalizeClose();
+      } else if (
+        !isClosingRef.current &&
+        drawer.open &&
+        scroller.scrollLeft <= 2
+      ) {
+        hasSettledOpenRef.current = true;
+      }
+    };
 
-    const visibleThreshold = 1 / Math.max(window.innerWidth, 320);
+    scroller.addEventListener('scroll', handleScroll, { passive: true });
+
+    const visibleThreshold = 0.05;
     const observer = new IntersectionObserver(
       (entries) => {
         const entry = entries[entries.length - 1];
-        if (!entry) return;
-        if (entry.intersectionRatio < visibleThreshold && drawer.open) {
-          drawer.close();
-          setMobileMenuOpen(false);
-        } else if (entry.intersectionRatio > 0.9) {
+        if (!entry || !drawer.open) return;
+        if (entry.intersectionRatio >= 0.95 && !isClosingRef.current) {
+          hasSettledOpenRef.current = true;
           setMobileMenuOpen(true);
+          openBtnRef.current?.setAttribute('aria-expanded', 'true');
+        } else if (
+          hasSettledOpenRef.current &&
+          entry.intersectionRatio < visibleThreshold
+        ) {
+          finalizeClose();
         }
       },
       { root: drawer, threshold: [visibleThreshold, 0.95] }
@@ -136,7 +209,7 @@ export function LivingBroadsheetHeader() {
         event.preventDefault();
         closeDrawer();
       } else {
-        setMobileMenuOpen(false);
+        finalizeClose();
       }
     };
 
@@ -145,9 +218,9 @@ export function LivingBroadsheetHeader() {
     return () => {
       observer.disconnect();
       drawer.removeEventListener('cancel', handleCancel);
-      cleanupScroll?.();
+      scroller.removeEventListener('scroll', handleScroll);
     };
-  }, [closeDrawer]);
+  }, [closeDrawer, finalizeClose]);
 
   const handleLocaleChange = (code: LocaleCode) => {
     playLocaleSwitch();
@@ -166,14 +239,14 @@ export function LivingBroadsheetHeader() {
     <>
       <header
         data-testid="living-broadsheet-header"
-        className={`fixed top-0 inset-x-0 z-40 transition-all duration-300 ${
+        className={`safe-top-header fixed top-0 inset-x-0 z-40 transition-all duration-300 ${
           scrolled
             ? 'bg-[#090B0A]/88 backdrop-blur-xl border-b border-[#EAE2D3]/12 py-2.5 sm:py-3'
-            : 'bg-gradient-to-b from-[#090B0A]/90 via-[#090B0A]/45 to-transparent border-b border-[#EAE2D3]/[0.08] py-3.5 sm:py-4'
+            : 'bg-gradient-to-b from-[#090B0A]/90 via-[#090B0A]/45 to-transparent border-b border-[#EAE2D3]/[0.08] py-3 sm:py-4'
         }`}
       >
-        <div className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-12 flex items-center justify-between gap-3">
-          {/* Left: Official Brand Lockup */}
+        <div className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-12 flex items-center justify-between gap-2 sm:gap-3">
+          {/* Left: Official Horizontal Brand Lockup (blonde-ai-horizontal-dark.svg per README-ASSETS.md) */}
           <a
             href="#hero-spotlight"
             onClick={(e) => {
@@ -182,23 +255,14 @@ export function LivingBroadsheetHeader() {
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
             aria-label="blonde AI Home"
-            className="group flex items-center gap-2.5 shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#CCFF29] rounded-lg"
+            className="group min-h-[44px] min-w-[44px] flex items-center gap-2.5 shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#CCFF29] rounded-lg"
           >
             <img
-              src="/assets/brand/blonde-ai-mark-volt.svg"
-              alt=""
-              aria-hidden="true"
-              className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg transition-transform duration-300 group-hover:scale-105"
+              src="/assets/brand/blonde-ai-horizontal-dark.svg"
+              alt="blonde AI"
+              className="h-9 sm:h-10 w-auto rounded-lg transition-transform duration-300 group-hover:scale-[1.02]"
             />
-            <div className="flex items-center gap-1.5">
-              <span className="font-sans font-extrabold text-lg sm:text-xl tracking-tight text-[#EAE2D3]">
-                blonde
-              </span>
-              <span className="px-1.5 py-0.5 rounded bg-[#CCFF29] text-[#090B0A] font-mono font-bold text-[11px] tracking-wider leading-none">
-                AI
-              </span>
-            </div>
-            <span className="hidden xl:inline-block ml-2 pl-3 border-l border-[#EAE2D3]/15 font-mono text-[10px] tracking-[0.14em] text-[#9CA39E] uppercase">
+            <span className="hidden xl:inline-block ml-1 pl-3 border-l border-[#EAE2D3]/15 font-mono text-[10px] tracking-[0.14em] text-[#9CA39E] uppercase">
               EDITION 001 // AaaS
             </span>
           </a>
@@ -221,7 +285,7 @@ export function LivingBroadsheetHeader() {
                     aria-current={isActive ? 'true' : undefined}
                     data-testid={`lang-btn-desktop-${item.code}`}
                     onClick={() => handleLocaleChange(item.code)}
-                    className={`min-h-[32px] px-2.5 py-1 rounded-full font-mono text-[11px] tracking-[0.1em] uppercase transition-all ${
+                    className={`min-h-[34px] px-2.5 py-1 rounded-full font-mono text-[11px] tracking-[0.1em] uppercase transition-all ${
                       isActive
                         ? 'bg-[#CCFF29] text-[#090B0A] font-bold shadow-[0_0_12px_rgba(204,255,41,0.35)]'
                         : 'text-[#9CA39E] hover:text-[#EAE2D3]'
@@ -234,21 +298,28 @@ export function LivingBroadsheetHeader() {
             </nav>
           </div>
 
-          {/* Right (Desktop lg+): Sound Toggle (#6) + Magnetic Waitlist Pill */}
+          {/* Right (Desktop lg+): Native HTML Switch Sound Toggle (#6) + Magnetic Waitlist Pill */}
           <div className="hidden lg:flex items-center gap-3 shrink-0">
-            <button
-              type="button"
+            <label
+              htmlFor="desktop-sound-switch-input"
               role="switch"
               aria-checked={soundEnabled}
               data-cursor="sound"
               data-testid="desktop-sound-toggle"
-              onClick={toggleSound}
-              className={`min-h-[40px] px-3.5 py-1.5 rounded-full border font-mono text-[11px] tracking-[0.12em] uppercase flex items-center gap-2 transition-all ${
+              className={`cursor-pointer min-h-[40px] px-3.5 py-1.5 rounded-full border font-mono text-[11px] tracking-[0.12em] uppercase inline-flex items-center gap-2 transition-all select-none ${
                 soundEnabled
                   ? 'border-[#CCFF29] bg-[#CCFF29]/12 text-[#CCFF29]'
                   : 'border-[#EAE2D3]/20 bg-[#121614]/80 text-[#9CA39E] hover:text-[#EAE2D3] hover:border-[#EAE2D3]/40'
               }`}
             >
+              <input
+                id="desktop-sound-switch-input"
+                type="checkbox"
+                {...({ switch: '' } as React.InputHTMLAttributes<HTMLInputElement>)}
+                checked={soundEnabled}
+                onChange={toggleSound}
+                className="sr-only"
+              />
               <span
                 aria-hidden="true"
                 className="inline-flex items-end gap-0.5 h-3 w-3 justify-center"
@@ -270,7 +341,7 @@ export function LivingBroadsheetHeader() {
                 />
               </span>
               <span>[ {soundEnabled ? t.nav.soundOn : t.nav.soundOff} ]</span>
-            </button>
+            </label>
 
             <a
               href={WHATSAPP_WAITLIST_URL}
@@ -286,25 +357,32 @@ export function LivingBroadsheetHeader() {
             </a>
           </div>
 
-          {/* Mobile & Tablet (< lg): Quick Sound Toggle + Active Lang Indicator + Menu Drawer Trigger */}
+          {/* Mobile & Tablet (< lg): Quick Sound Switch (>= 44x44px) + Menu Drawer Trigger (>= 44x44px) */}
           <div className="flex lg:hidden items-center gap-2 shrink-0">
             {/* Mobile Quick Sound Toggle Switch */}
-            <button
-              type="button"
+            <label
+              htmlFor="mobile-header-sound-switch-input"
               role="switch"
               aria-checked={soundEnabled}
               aria-label={soundEnabled ? t.nav.soundOn : t.nav.soundOff}
               data-testid="mobile-header-sound-toggle"
-              onClick={toggleSound}
-              className={`min-h-[42px] px-2.5 rounded-full border font-mono text-[10px] tracking-[0.1em] uppercase flex items-center gap-1.5 transition-all ${
+              className={`cursor-pointer min-h-[44px] min-w-[44px] px-3 rounded-full border font-mono text-[10px] tracking-[0.1em] uppercase inline-flex items-center justify-center gap-1.5 transition-all select-none ${
                 soundEnabled
                   ? 'border-[#CCFF29] bg-[#CCFF29]/15 text-[#CCFF29]'
                   : 'border-[#EAE2D3]/20 bg-[#121614]/90 text-[#9CA39E]'
               }`}
             >
+              <input
+                id="mobile-header-sound-switch-input"
+                type="checkbox"
+                {...({ switch: '' } as React.InputHTMLAttributes<HTMLInputElement>)}
+                checked={soundEnabled}
+                onChange={toggleSound}
+                className="sr-only"
+              />
               <span
                 aria-hidden="true"
-                className="inline-flex items-end gap-0.5 h-2.5"
+                className="inline-flex items-end gap-0.5 h-3"
               >
                 <span
                   className={`w-0.5 bg-current ${
@@ -313,7 +391,7 @@ export function LivingBroadsheetHeader() {
                 />
                 <span
                   className={`w-0.5 bg-current ${
-                    soundEnabled ? 'h-2.5 animate-pulse' : 'h-1 opacity-50'
+                    soundEnabled ? 'h-3 animate-pulse' : 'h-1 opacity-50'
                   }`}
                 />
                 <span
@@ -322,10 +400,10 @@ export function LivingBroadsheetHeader() {
                   }`}
                 />
               </span>
-              <span className="hidden xs:inline">
+              <span className="text-[10px] font-bold">
                 {soundEnabled ? 'ON' : 'OFF'}
               </span>
-            </button>
+            </label>
 
             {/* Mobile Menu Trigger Button */}
             <button
@@ -339,7 +417,7 @@ export function LivingBroadsheetHeader() {
               aria-controls="mobile-navigation-drawer"
               data-testid="mobile-menu-trigger"
               onClick={toggleMobileMenu}
-              className={`min-h-[42px] px-3.5 py-2 rounded-full border font-mono text-[11px] tracking-[0.12em] uppercase flex items-center gap-2 transition-all ${
+              className={`min-h-[44px] min-w-[44px] px-3.5 py-2 rounded-full border font-mono text-[11px] tracking-[0.12em] uppercase inline-flex items-center justify-center gap-2 transition-all ${
                 mobileMenuOpen
                   ? 'border-[#CCFF29] bg-[#CCFF29] text-[#090B0A] font-bold'
                   : 'border-[#EAE2D3]/25 bg-[#121614]/95 text-[#EAE2D3]'
@@ -377,6 +455,7 @@ export function LivingBroadsheetHeader() {
         id="mobile-navigation-drawer"
         aria-label={t.nav.drawerTitle}
         data-testid="mobile-navigation-drawer"
+        data-lenis-prevent
         onClick={(e) => {
           if (sheetRef.current && !sheetRef.current.contains(e.target as Node)) {
             closeDrawer();
@@ -388,7 +467,7 @@ export function LivingBroadsheetHeader() {
           <nav
             ref={sheetRef}
             aria-label="Mobile Primary Navigation"
-            className="Drawer-sheet bg-[#090B0A] text-[#EAE2D3] border-r border-[#EAE2D3]/15 p-5 flex flex-col justify-between"
+            className="Drawer-sheet bg-[#090B0A] text-[#EAE2D3] border-r border-[#EAE2D3]/15 flex flex-col justify-between"
           >
             {/* Top Drawer Header */}
             <div>
@@ -407,10 +486,11 @@ export function LivingBroadsheetHeader() {
                 <button
                   id="drawer-close"
                   type="button"
+                  autoFocus
                   aria-label={t.nav.menuCloseLabel}
                   data-testid="mobile-drawer-close"
                   onClick={closeDrawer}
-                  className="min-h-[42px] min-w-[42px] px-3 rounded-full border border-[#EAE2D3]/20 hover:border-[#CCFF29] text-[#EAE2D3] hover:text-[#CCFF29] font-mono text-[11px] tracking-[0.12em] uppercase flex items-center justify-center gap-1.5"
+                  className="min-h-[44px] min-w-[44px] px-3.5 rounded-full border border-[#EAE2D3]/20 hover:border-[#CCFF29] text-[#EAE2D3] hover:text-[#CCFF29] font-mono text-[11px] tracking-[0.12em] uppercase inline-flex items-center justify-center gap-1.5"
                 >
                   <span>×</span>
                   <span>{t.nav.menuCloseLabel}</span>
@@ -460,7 +540,7 @@ export function LivingBroadsheetHeader() {
                         aria-current={isActive ? 'true' : undefined}
                         data-testid={`lang-btn-mobile-${item.code}`}
                         onClick={() => handleLocaleChange(item.code)}
-                        className={`min-h-[44px] px-2.5 py-2 rounded-lg border font-mono text-xs tracking-[0.08em] flex flex-col items-center justify-center transition-all ${
+                        className={`min-h-[44px] min-w-[44px] px-2.5 py-2 rounded-lg border font-mono text-xs tracking-[0.08em] flex flex-col items-center justify-center transition-all ${
                           isActive
                             ? 'bg-[#CCFF29] text-[#090B0A] border-[#CCFF29] font-bold shadow-[0_0_16px_rgba(204,255,41,0.3)]'
                             : 'bg-[#121614] text-[#EAE2D3] border-[#EAE2D3]/15 hover:border-[#CCFF29]/50'
@@ -480,15 +560,14 @@ export function LivingBroadsheetHeader() {
                 </div>
               </div>
 
-              {/* 3. Studio Sound Tactile Switch Card (#6) */}
+              {/* 3. Studio Sound Tactile Switch Card (#6) using native <input type="checkbox" switch> */}
               <div className="mt-5 pt-4 border-t border-[#EAE2D3]/15">
-                <button
-                  type="button"
+                <label
+                  htmlFor="mobile-drawer-sound-switch-input"
                   role="switch"
                   aria-checked={soundEnabled}
                   data-testid="mobile-drawer-sound-switch"
-                  onClick={toggleSound}
-                  className={`w-full min-h-[54px] p-3.5 rounded-xl border text-left flex items-center justify-between gap-3 transition-all ${
+                  className={`cursor-pointer w-full min-h-[54px] p-3.5 rounded-xl border text-left flex items-center justify-between gap-3 transition-all select-none ${
                     soundEnabled
                       ? 'bg-[#0B4635]/45 border-[#CCFF29] text-[#EAE2D3]'
                       : 'bg-[#121614] border-[#EAE2D3]/15 text-[#EAE2D3]'
@@ -502,22 +581,32 @@ export function LivingBroadsheetHeader() {
                       {t.nav.audioDesc}
                     </div>
                   </div>
-                  {/* Tactile Toggle Track & Thumb */}
-                  <div
-                    aria-hidden="true"
-                    className={`w-12 h-7 rounded-full p-1 transition-colors flex items-center ${
-                      soundEnabled
-                        ? 'bg-[#CCFF29] justify-end'
-                        : 'bg-[#181E1B] border border-[#EAE2D3]/20 justify-start'
-                    }`}
-                  >
-                    <span
-                      className={`w-5 h-5 rounded-full transition-transform ${
-                        soundEnabled ? 'bg-[#090B0A]' : 'bg-[#9CA39E]'
-                      }`}
+                  <div className="flex items-center gap-2 shrink-0">
+                    <input
+                      id="mobile-drawer-sound-switch-input"
+                      type="checkbox"
+                      {...({ switch: '' } as React.InputHTMLAttributes<HTMLInputElement>)}
+                      checked={soundEnabled}
+                      onChange={toggleSound}
+                      className="sr-only"
                     />
+                    {/* Tactile Toggle Track & Thumb */}
+                    <div
+                      aria-hidden="true"
+                      className={`w-12 h-7 rounded-full p-1 transition-colors flex items-center ${
+                        soundEnabled
+                          ? 'bg-[#CCFF29] justify-end'
+                          : 'bg-[#181E1B] border border-[#EAE2D3]/20 justify-start'
+                      }`}
+                    >
+                      <span
+                        className={`w-5 h-5 rounded-full transition-transform ${
+                          soundEnabled ? 'bg-[#090B0A]' : 'bg-[#9CA39E]'
+                        }`}
+                      />
+                    </div>
                   </div>
-                </button>
+                </label>
               </div>
             </div>
 

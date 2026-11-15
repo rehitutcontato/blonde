@@ -1,7 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocale } from '@/lib/i18n/dictionary';
+import {
+  scrollBridge,
+  subscribePreloaderState,
+} from '@/lib/scroll-bridge';
 import { SystemImmersionGate } from '@/components/preloader/SystemImmersionGate';
 import { LivingBroadsheetHeader } from '@/components/editorial/LivingBroadsheetHeader';
 import { HeroSpotlightAct } from '@/components/editorial/HeroSpotlightAct';
@@ -14,6 +18,18 @@ import { MonumentalColophon } from '@/components/editorial/MonumentalColophon';
 
 export default function BlondeGenesisPage() {
   const { isTransitioning } = useLocale();
+  const [preloaderCleared, setPreloaderCleared] = useState(false);
+
+  useEffect(() => {
+    if (scrollBridge.preloaderOpening || scrollBridge.preloaderDone) {
+      setPreloaderCleared(true);
+    }
+    return subscribePreloaderState(({ opening, done }) => {
+      if (opening || done) {
+        setPreloaderCleared(true);
+      }
+    });
+  }, []);
 
   return (
     <>
@@ -26,8 +42,12 @@ export default function BlondeGenesisPage() {
       {/* Continuous Single-Stage Broadsheet Flow over Persistent WebGL Liquid Metal */}
       <main
         id="broadsheet-main-stage"
-        className={`relative z-10 bg-transparent transition-all duration-150 ${
-          isTransitioning ? 'opacity-45 blur-[2px]' : 'opacity-100 blur-0'
+        className={`relative z-10 bg-transparent transition-[opacity,filter] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          isTransitioning
+            ? 'opacity-45 blur-[2px]'
+            : !preloaderCleared
+              ? 'opacity-90 blur-[12px]'
+              : 'opacity-100 blur-0'
         }`}
       >
         {/* Act I: Hero — The Spotlight Break */}

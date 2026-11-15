@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocale } from '@/lib/i18n/dictionary';
 import { useStudioAudio } from '@/lib/audio/StudioSoundEngine';
+import { scrollBridge } from '@/lib/scroll-bridge';
 
 type BladeMode = 'creator' | 'product';
 
@@ -17,8 +18,9 @@ export function BeforeAfterOpticalBlade() {
   const lastStepBucketRef = useRef(6);
   const isDraggingRef = useRef(false);
   const stageRef = useRef<HTMLDivElement>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
 
-  // Smooth lerp (0.18 per como-criar/05) for liquid blade physics
+  // Smooth lerp (0.18 per como-criar/05) for liquid blade physics + subtle desktop eye-gaze perspective (como-criar/04)
   useEffect(() => {
     let rafId = 0;
     const animateBlade = () => {
@@ -35,6 +37,17 @@ export function BeforeAfterOpticalBlade() {
           playBladeTick(rounded);
         }
       }
+
+      if (
+        frameRef.current &&
+        scrollBridge.pointerFine &&
+        !isDraggingRef.current
+      ) {
+        const rx = (-scrollBridge.smoothMouseY * 1.1).toFixed(2);
+        const ry = (scrollBridge.smoothMouseX * 1.4).toFixed(2);
+        frameRef.current.style.transform = `perspective(1200px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      }
+
       rafId = window.requestAnimationFrame(animateBlade);
     };
     rafId = window.requestAnimationFrame(animateBlade);
@@ -113,7 +126,7 @@ export function BeforeAfterOpticalBlade() {
       data-testid="interaction-2-optical-blade"
       className="relative w-full"
     >
-      {/* Top Bar: Kicker + Mode Switcher Tabs (01 / CREATOR & FOUNDER vs 02 / REAL PRODUCT) */}
+      {/* Top Bar: Kicker + Responsive Mode Switcher Tabs (01 / CREATOR & FOUNDER vs 02 / REAL PRODUCT) */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
         <div className="flex items-center gap-2 font-mono text-[11px] tracking-[0.14em] text-[#090B0A]/75 uppercase">
           <span className="inline-block w-2 h-2 bg-[#0B4635]" />
@@ -123,7 +136,7 @@ export function BeforeAfterOpticalBlade() {
         <div
           role="tablist"
           aria-label="Before and After Comparison Modes"
-          className="inline-flex rounded-full p-1 bg-[#090B0A] border border-[#090B0A]/20 self-start md:self-auto"
+          className="grid grid-cols-1 sm:inline-flex w-full sm:w-auto gap-1 rounded-2xl sm:rounded-full p-1 bg-[#090B0A] border border-[#090B0A]/20"
         >
           <button
             type="button"
@@ -134,7 +147,7 @@ export function BeforeAfterOpticalBlade() {
               setMode('creator');
               playShutter();
             }}
-            className={`min-h-[38px] px-4 py-1.5 rounded-full font-mono text-[11px] tracking-[0.1em] uppercase transition-all ${
+            className={`min-h-[44px] min-w-[44px] px-4 py-2 rounded-xl sm:rounded-full font-mono text-[11px] tracking-[0.1em] uppercase transition-all ${
               mode === 'creator'
                 ? 'bg-[#CCFF29] text-[#090B0A] font-bold'
                 : 'text-[#EAE2D3]/75 hover:text-[#EAE2D3]'
@@ -151,7 +164,7 @@ export function BeforeAfterOpticalBlade() {
               setMode('product');
               playShutter();
             }}
-            className={`min-h-[38px] px-4 py-1.5 rounded-full font-mono text-[11px] tracking-[0.1em] uppercase transition-all ${
+            className={`min-h-[44px] min-w-[44px] px-4 py-2 rounded-xl sm:rounded-full font-mono text-[11px] tracking-[0.1em] uppercase transition-all ${
               mode === 'product'
                 ? 'bg-[#CCFF29] text-[#090B0A] font-bold'
                 : 'text-[#EAE2D3]/75 hover:text-[#EAE2D3]'
@@ -162,8 +175,11 @@ export function BeforeAfterOpticalBlade() {
         </div>
       </div>
 
-      {/* Main 16:9 Viewfinder Comparison Stage */}
-      <div className="relative p-1.5 sm:p-2.5 bg-[#090B0A] rounded-xl shadow-[0_28px_80px_rgba(9,11,10,0.45)] border border-[#090B0A]">
+      {/* Main Viewfinder Comparison Stage */}
+      <div
+        ref={frameRef}
+        className="relative p-1.5 sm:p-2.5 bg-[#090B0A] rounded-xl shadow-[0_28px_80px_rgba(9,11,10,0.45)] border border-[#090B0A] transition-transform duration-150"
+      >
         {/* Viewfinder Corner Brackets ⌜ ⌝ ⌞ ⌟ */}
         <span
           aria-hidden="true"
@@ -197,7 +213,7 @@ export function BeforeAfterOpticalBlade() {
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerUp}
           onKeyDown={handleKeyDown}
-          className="relative aspect-[16/10] sm:aspect-[16/9] w-full overflow-hidden rounded-lg select-none cursor-ew-resize touch-pan-y focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#CCFF29]"
+          className="relative aspect-[4/3] sm:aspect-[16/9] w-full overflow-hidden rounded-lg select-none cursor-ew-resize touch-pan-y focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#CCFF29]"
         >
           {/* LAYER 1: BEFORE (Full width & height underneath) */}
           <div className="absolute inset-0 w-full h-full">
@@ -210,9 +226,9 @@ export function BeforeAfterOpticalBlade() {
             <div className="absolute inset-0 bg-gradient-to-t from-[#090B0A]/80 via-transparent to-[#090B0A]/45" />
 
             {/* Before Telemetry HUD */}
-            <div className="absolute top-3 left-3 sm:top-5 sm:left-5 flex items-center gap-2 px-3 py-1.5 rounded bg-[#090B0A]/85 border border-[#9CA39E]/30 backdrop-blur-sm">
-              <span className="w-2 h-2 rounded-full bg-red-500/80" />
-              <span className="font-mono text-[10px] sm:text-xs tracking-[0.12em] text-[#EAE2D3]">
+            <div className="absolute top-2.5 left-2.5 sm:top-5 sm:left-5 flex items-center gap-1.5 sm:gap-2 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded bg-[#090B0A]/85 border border-[#9CA39E]/30 backdrop-blur-sm max-w-[46%]">
+              <span className="w-2 h-2 shrink-0 rounded-full bg-red-500/80" />
+              <span className="font-mono text-[9px] sm:text-xs tracking-[0.1em] sm:tracking-[0.12em] text-[#EAE2D3] truncate">
                 {beforeBadge}
               </span>
             </div>
@@ -245,17 +261,17 @@ export function BeforeAfterOpticalBlade() {
             <div className="absolute inset-0 bg-gradient-to-t from-[#090B0A]/75 via-transparent to-[#090B0A]/30" />
 
             {/* After Telemetry HUD */}
-            <div className="absolute top-3 right-3 sm:top-5 sm:right-5 flex items-center gap-2 px-3 py-1.5 rounded bg-[#0B4635]/90 border border-[#CCFF29]/60 backdrop-blur-sm shadow-lg">
-              <span className="w-2 h-2 rounded-full bg-[#CCFF29] animate-pulse" />
-              <span className="font-mono text-[10px] sm:text-xs tracking-[0.12em] text-[#CCFF29] font-bold">
+            <div className="absolute top-2.5 right-2.5 sm:top-5 sm:right-5 flex items-center gap-1.5 sm:gap-2 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded bg-[#0B4635]/90 border border-[#CCFF29]/60 backdrop-blur-sm shadow-lg max-w-[48%]">
+              <span className="w-2 h-2 shrink-0 rounded-full bg-[#CCFF29] animate-pulse" />
+              <span className="font-mono text-[9px] sm:text-xs tracking-[0.1em] sm:tracking-[0.12em] text-[#CCFF29] font-bold truncate">
                 {afterBadge}
               </span>
             </div>
 
             {/* Live Vector Editorial Subtitle Burn-in Preview on After Side */}
-            <div className="absolute bottom-3 right-3 sm:bottom-6 sm:right-6 max-w-[75%] text-right pointer-events-none">
-              <div className="inline-block px-3.5 py-2 rounded bg-[#090B0A]/85 border-l-2 border-[#CCFF29] backdrop-blur-md">
-                <p className="font-display font-extrabold uppercase tracking-tight text-sm sm:text-xl md:text-2xl text-[#EAE2D3] leading-none">
+            <div className="absolute bottom-2.5 right-2.5 sm:bottom-6 sm:right-6 max-w-[78%] sm:max-w-[75%] text-right pointer-events-none">
+              <div className="inline-block px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded bg-[#090B0A]/88 border-l-2 border-[#CCFF29] backdrop-blur-md">
+                <p className="font-display font-extrabold uppercase tracking-tight text-xs sm:text-xl md:text-2xl text-[#EAE2D3] leading-none">
                   {mode === 'creator'
                     ? t.act3.i2.creatorOverlayTitle
                     : t.act3.i2.productOverlayTitle}{' '}
@@ -265,7 +281,7 @@ export function BeforeAfterOpticalBlade() {
                       : t.act3.i2.productOverlayTag}
                   </span>
                 </p>
-                <p className="mt-1 font-mono text-[9px] sm:text-[10px] tracking-[0.16em] text-[#CCFF29]/90 uppercase">
+                <p className="mt-0.5 sm:mt-1 font-mono text-[8px] sm:text-[10px] tracking-[0.12em] sm:tracking-[0.16em] text-[#CCFF29]/90 uppercase">
                   FFMPEG DETERMINISTIC VECTOR · 60FPS LOCKED
                 </p>
               </div>
@@ -280,16 +296,22 @@ export function BeforeAfterOpticalBlade() {
             {/* 2px Blonde Volt Glowing Blade Line */}
             <div className="w-[2px] h-full bg-[#CCFF29] shadow-[0_0_18px_#CCFF29,0_0_4px_#FFFFFF]" />
 
-            {/* Tactile Chrome & Volt Handle */}
+            {/* Tactile Chrome & Volt Handle (44x44px circle centered vertically, label shown on sm+ so mobile never overlaps bottom card) */}
             <div className="absolute top-1/2 -translate-y-1/2 flex flex-col items-center gap-1.5">
               <div className="w-11 h-11 rounded-full bg-[#121614] border-2 border-[#CCFF29] shadow-[0_0_25px_rgba(204,255,41,0.55)] flex items-center justify-center text-[#CCFF29] font-mono text-sm font-bold">
                 ⇄
               </div>
-              <span className="px-2 py-0.5 rounded bg-[#090B0A]/90 border border-[#CCFF29]/40 font-mono text-[9px] tracking-[0.14em] text-[#CCFF29] whitespace-nowrap uppercase">
+              <span className="hidden sm:inline-block px-2 py-0.5 rounded bg-[#090B0A]/90 border border-[#CCFF29]/40 font-mono text-[9px] tracking-[0.14em] text-[#CCFF29] whitespace-nowrap uppercase">
                 {t.act3.i2.dragHint} · {Math.round(split)}%
               </span>
             </div>
           </div>
+        </div>
+
+        {/* Mobile Blade Telemetry Status Bar (keeps 100% of drag readout visible without colliding with video overlays) */}
+        <div className="mt-2 sm:hidden flex items-center justify-between px-2 py-1 font-mono text-[10px] tracking-[0.14em] text-[#CCFF29] uppercase">
+          <span>⇄ {t.act3.i2.dragHint}</span>
+          <span className="tabular-nums">{Math.round(split)}% SPLIT</span>
         </div>
       </div>
     </div>
