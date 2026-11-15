@@ -1,0 +1,4 @@
+# Ignore everything in landingpage/ except blondecodigo/
+/*
+!/.gitignore
+!/blondecodigo/

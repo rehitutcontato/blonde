@@ -1,0 +1,63 @@
+{
+  "brand": {
+    "name": "blonde AI",
+    "taglineGlobal": "STAND OUT IN THE CROWD.",
+    "taglinePtBr": "BRILHE NO MEIO DA MULTIDÃO.",
+    "targetDomainFuture": "blonde.ai",
+    "currentDomainStatus": "TBD_NO_DOMAIN_PURCHASED_YET",
+    "launchTerritoryStrategy": "Opening doors first in Brazil (closed circle) — built in English (EN-US) to global studio standards."
+  },
+  "cta": {
+    "primaryAction": "EXTERNAL_WHATSAPP_WAITLIST",
+    "url": "https://chat.whatsapp.com/KFrb3XFq1wwK1qwguXSD1Q",
+    "rel": "noopener noreferrer",
+    "target": "_blank",
+    "waitlistBenefits": [
+      "Direct access to the founder",
+      "Submit feedback, updates, ideas, and product insights",
+      "Curated networking with Creators, Founders, and Operators",
+      "Exclusive channel where the Founder Pre-Sale link drops 1 month before May launch (Beta v0.5 opens April 9, 2027)"
+    ]
+  },
+  "locales": {
+    "default": "en",
+    "available": [
+      { "code": "en", "label": "EN", "name": "English", "hreflang": "en-US" },
+      { "code": "pt", "label": "PT", "name": "Português", "hreflang": "pt-BR" },
+      { "code": "de", "label": "DE", "name": "Deutsch", "hreflang": "de-DE" },
+      { "code": "fr", "label": "FR", "name": "Français", "hreflang": "fr-FR" },
+      { "code": "es", "label": "ES", "name": "Español", "hreflang": "es-419" },
+      { "code": "it", "label": "IT", "name": "Italiano", "hreflang": "it-IT" }
+    ]
+  },
+  "icps": {
+    "primarySpotlight": ["Creators", "Founders", "Infoproducers"],
+    "coupledVerticals": ["Physical & Local Brands", "E-commerce D2C", "Media Buyers & Performance Operators"]
+  },
+  "interactions": {
+    "enabled": [
+      { "id": 2, "key": "before_after_optical_blade", "act": "ACT_III" },
+      { "id": 4, "key": "ai_melt_vs_vector_lens", "act": "ACT_IV" },
+      { "id": 6, "key": "studio_sound_design", "act": "GLOBAL" }
+    ]
+  },
+  "assetsMap": {
+    "brandLogosDir": "assets/brand/",
+    "heroStaticAndFallback": "assets/images/hero-liquid-lens-studio.jpg",
+    "liquidMetalSculptureRef": "assets/images/liquid-metal-sculpt-b.jpg",
+    "matcapLiquidChrome": "assets/images/matcap-liquid-chrome-volt.jpg",
+    "flutedEmeraldGlassTexture": "assets/images/texture-fluted-emerald-glass.jpg",
+    "travertineBroadsheetTexture": "assets/images/texture-travertine-editorial.jpg",
+    "interaction2": {
+      "creatorBefore": "assets/images/interaction2-before-creator.jpg",
+      "creatorAfter": "assets/images/interaction2-after-creator.jpg",
+      "productBefore": "assets/images/interaction2-before-product.jpg",
+      "productAfter": "assets/images/interaction2-after-product.jpg"
+    },
+    "interaction4": {
+      "genericAiSlopPlate": "assets/images/interaction4-ai-slop-frame.jpg",
+      "studioCleanPlate": "assets/images/interaction4-studio-clean-frame.jpg"
+    },
+    "videosDir": "assets/videos/"
+  }
+}

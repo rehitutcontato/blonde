@@ -1,0 +1,93 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "meta": {
+    "project": "blonde AI — Genesis Landing Page",
+    "mode": "MODE_B_MYSTERIOUS_WAITLIST",
+    "defaultLocale": "en",
+    "supportedLocales": ["en", "pt", "de", "fr", "es", "it"],
+    "references": ["Higgsfield", "Coca-Cola", "Charles Leclerc", "Apple Pro", "Teenage Engineering"]
+  },
+  "color": {
+    "stage603010": {
+      "obsidianNoir": "#090B0A",
+      "studioCarbon": "#121614",
+      "panelDeep": "#181E1B",
+      "mutedStone": "#9CA39E",
+      "editorialBeige": "#EAE2D3",
+      "softSand": "#F5EFE4",
+      "royalEmerald": "#0B4635",
+      "royalPineDark": "#072E23",
+      "royalBorder": "#13634C",
+      "blondeVolt": "#CCFF29",
+      "voltElectric": "#D4FF33"
+    },
+    "broadsheetInkRules": {
+      "hairlineOnDark": "rgba(234, 226, 211, 0.12)",
+      "hairlineStrongOnDark": "rgba(234, 226, 211, 0.24)",
+      "hairlineOnBeige": "rgba(9, 11, 10, 0.14)",
+      "hairlineOnRoyal": "rgba(245, 239, 228, 0.18)"
+    },
+    "liquidMetalThinFilm": {
+      "coreChromeDark": "#141817",
+      "chromeMidSpecular": "#8D9692",
+      "emeraldAmbientBounce": "#0B4635",
+      "beigeWarmBounce": "#EAE2D3",
+      "voltKeyBeam": "#CCFF29",
+      "iridescentFresnelStops": [
+        "rgba(204, 255, 41, 0.85)",
+        "rgba(56, 228, 214, 0.45)",
+        "rgba(139, 108, 255, 0.35)",
+        "rgba(245, 198, 118, 0.40)"
+      ]
+    }
+  },
+  "typography": {
+    "families": {
+      "display": "'Barlow Condensed', 'Arial Narrow', sans-serif",
+      "serifItalicFlash": "'Instrument Serif', Georgia, serif",
+      "bodySans": "'Plus Jakarta Sans', system-ui, sans-serif",
+      "telemetryMono": "'JetBrains Mono', ui-monospace, monospace"
+    },
+    "fluidScales": {
+      "heroDisplay": "clamp(3.25rem, 1.5rem + 7.2vw, 8.25rem)",
+      "actHeadline": "clamp(2.5rem, 1.2rem + 4.8vw, 5.75rem)",
+      "editorialLead": "clamp(1.125rem, 0.95rem + 0.65vw, 1.5rem)",
+      "newspaperBody": "clamp(0.95rem, 0.9rem + 0.2vw, 1.0625rem)",
+      "telemetryHud": "0.75rem"
+    },
+    "localeOpticalParity": {
+      "en": { "displayScaleMultiplier": 1.0, "trackingDisplay": "-0.025em" },
+      "pt": { "displayScaleMultiplier": 0.98, "trackingDisplay": "-0.025em" },
+      "de": { "displayScaleMultiplier": 0.94, "trackingDisplay": "-0.03em" },
+      "fr": { "displayScaleMultiplier": 0.97, "trackingDisplay": "-0.025em" },
+      "es": { "displayScaleMultiplier": 0.98, "trackingDisplay": "-0.025em" },
+      "it": { "displayScaleMultiplier": 0.98, "trackingDisplay": "-0.025em" }
+    }
+  },
+  "depthAndParallax": {
+    "planes": {
+      "Z_minus_2_crowdFog": { "scrollSpeed": 0.35, "cursorMaxShiftPx": 8, "zIndex": 0 },
+      "Z_minus_1_liquidMetalWebGL": { "scrollSpeed": 0.75, "cursorTiltDeg": 6, "zIndex": 1 },
+      "Z_0_livingBroadsheet": { "scrollSpeed": 1.0, "cursorMaxShiftPx": 0, "zIndex": 10 },
+      "Z_plus_1_opticalProofsAndHud": { "scrollSpeed": 1.15, "cursorMaxShiftPx": 12, "zIndex": 20 },
+      "Z_plus_2_preloaderAndReticle": { "scrollSpeed": 0, "zIndex": 50 }
+    },
+    "motionCurves": {
+      "lenisLerp": 0.085,
+      "lenisWheelMultiplier": 0.95,
+      "gazeCursorLerp": 0.06,
+      "shutterRevealEase": "cubic-bezier(0.16, 1, 0.3, 1)",
+      "liquidSettleEase": "cubic-bezier(0.22, 1, 0.36, 1)"
+    }
+  },
+  "phaseGateFlags": {
+    "currentPhase": "PHASE_0_WAITLIST_MODE_B",
+    "showPublicPricing": false,
+    "showFounderSlotsCounter": false,
+    "whatsappWaitlistUrl": "https://chat.whatsapp.com/KFrb3XFq1wwK1qwguXSD1Q",
+    "milestones": {
+      "betaV05DateIso": "2027-04-09",
+      "officialLaunchMonthIso": "2027-05"
+    }
+  }
+}

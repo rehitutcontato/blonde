@@ -1,0 +1,21 @@
+# Ignore all workspace folders except landingpage/blondecodigo
+/*
+!/.gitignore
+!/landingpage/
+
+# Inside landingpage/, ignore docs, raw assets, and guides — keep only blondecodigo/
+/landingpage/*
+!/landingpage/blondecodigo/
+
+# Build & Dependency artifacts inside blondecodigo
+**/node_modules/
+**/.next/
+**/out/
+**/build/
+**/dist/
+**/.vercel/
+**/*.tsbuildinfo
+**/next-env.d.ts
+**/.env*.local
+**/.DS_Store
+**/Thumbs.db

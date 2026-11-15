@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 220" width="1200" height="440" role="img" aria-label="blonde AI — Brilhe no Meio da Multidão">
+  <title>blonde AI — Launch Lockup (PT-BR Obsidian)</title>
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&amp;family=JetBrains+Mono:wght@700&amp;family=Plus+Jakarta+Sans:wght@800&amp;display=swap');
+      .wm { font-family: 'Plus Jakarta Sans', 'Inter', 'Helvetica Neue', Arial, sans-serif; font-weight: 800; letter-spacing: -2px; }
+      .ai { font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace; font-weight: 700; letter-spacing: 1px; }
+      .tag { font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif; font-weight: 700; letter-spacing: 4.5px; }
+    </style>
+  </defs>
+  <rect width="600" height="220" rx="18" fill="#090B0A"/>
+  <path d="M20,34 L20,20 L34,20 M566,20 L580,20 L580,34 M20,186 L20,200 L34,200 M566,200 L580,200 L580,186" fill="none" stroke="#EAE2D3" stroke-opacity="0.22" stroke-width="1.5"/>
+  <g transform="translate(132, 40) scale(0.76)">
+    <rect width="100" height="100" rx="22" fill="#121614" stroke="#0B4635" stroke-width="2.2"/>
+    <polygon points="21,41.17 21,19.08 35,11.00 35,33.09" fill="#CCFF29"/>
+    <path fill-rule="evenodd" fill="#EAE2D3" d="M 21,48.10 L 35,40.02 A 27,27 0 1 1 52,88 L 21,88 Z M 65.5,61 A 13.5,13.5 0 1 0 38.5,61 A 13.5,13.5 0 1 0 65.5,61 Z"/>
+  </g>
+  <text x="224" y="96" font-size="54" fill="#EAE2D3" class="wm">blonde</text>
+  <rect x="414" y="57" width="54" height="39" rx="8" fill="#CCFF29"/>
+  <text x="441" y="84" font-size="21" text-anchor="middle" fill="#090B0A" class="ai">AI</text>
+  <line x1="132" y1="132" x2="468" y2="132" stroke="#EAE2D3" stroke-opacity="0.16" stroke-width="1"/>
+  <rect x="132" y="131" width="42" height="2" fill="#CCFF29"/>
+  <text x="300" y="168" font-size="18.5" text-anchor="middle" fill="#EAE2D3" class="tag"><tspan fill="#CCFF29">BRILHE</tspan> NO MEIO DA MULTIDÃO.</text>
+</svg>

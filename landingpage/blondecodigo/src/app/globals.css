@@ -1,0 +1,187 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-obsidian-noir: #090b0a;
+  --color-studio-carbon: #121614;
+  --color-panel-deep: #181e1b;
+  --color-muted-stone: #9ca39e;
+  --color-editorial-beige: #eae2d3;
+  --color-soft-sand: #f5efe4;
+  --color-royal-emerald: #0b4635;
+  --color-royal-pine-dark: #072e23;
+  --color-royal-border: #13634c;
+  --color-blonde-volt: #ccff29;
+  --color-volt-electric: #d4ff33;
+
+  --display-parity-scale: 1;
+  --display-parity-tracking: -0.025em;
+}
+
+html[data-lang='pt'],
+html[data-lang='es'],
+html[data-lang='it'] {
+  --display-parity-scale: 0.98;
+  --display-parity-tracking: -0.025em;
+}
+
+html[data-lang='fr'] {
+  --display-parity-scale: 0.97;
+  --display-parity-tracking: -0.025em;
+}
+
+html[data-lang='de'] {
+  --display-parity-scale: 0.94;
+  --display-parity-tracking: -0.03em;
+}
+
+html,
+body {
+  background-color: #090b0a;
+  color: #eae2d3;
+  overflow-x: clip;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: #ccff29;
+  color: #090b0a;
+}
+
+/* Fluid Typography Scales with Optical Parity Multipliers & WCAG 1.4.4 Zoom Compliance */
+.hero-display-scale {
+  font-size: calc(
+    clamp(2.75rem, 1.6rem + 5.2vw, 6.75rem) * var(--display-parity-scale, 1)
+  );
+  line-height: 0.91;
+  letter-spacing: var(--display-parity-tracking, -0.025em);
+  text-wrap: balance;
+  overflow-wrap: break-word;
+  hyphens: none;
+}
+
+.act-headline-scale {
+  font-size: calc(
+    clamp(2.2rem, 1.35rem + 3.8vw, 5.25rem) * var(--display-parity-scale, 1)
+  );
+  line-height: 0.93;
+  letter-spacing: var(--display-parity-tracking, -0.025em);
+  text-wrap: balance;
+  overflow-wrap: break-word;
+  hyphens: none;
+}
+
+/* Architectural Fluted Royal Emerald Glass Ribs */
+.fluted-emerald-ribs {
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(234, 226, 211, 0.08) 0px,
+    rgba(234, 226, 211, 0.02) 6px,
+    rgba(7, 46, 35, 0.45) 12px,
+    rgba(204, 255, 41, 0.07) 18px,
+    rgba(234, 226, 211, 0.08) 24px
+  );
+}
+
+/* 35mm Cinema Grain Overlay (SVG Fractal Noise) */
+.cinema-grain-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* ============================================================================
+   Modern Web Guidance: Top-Layer <dialog> Mobile Navigation Drawer
+   ============================================================================ */
+@property --drawer-backdrop {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+.Drawer {
+  --drawer-width: min(22rem, 86dvw, 100dvw - 24px);
+  --drawer-backdrop: 0;
+
+  inset: 0;
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  overflow: visible;
+}
+
+.Drawer:not([open]) {
+  display: none;
+}
+
+.Drawer::backdrop {
+  background: #090b0a;
+  opacity: calc(var(--drawer-backdrop, 0.75) * 0.78);
+  backdrop-filter: blur(6px);
+}
+
+.Drawer-scroller {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--drawer-width) 100%;
+  overflow-x: scroll;
+  overscroll-behavior: none;
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+}
+
+.Drawer-scroller::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .Drawer-scroller {
+    scroll-behavior: smooth;
+  }
+}
+
+.Drawer-scroller::after {
+  content: '';
+  scroll-snap-align: end;
+  scroll-initial-target: nearest;
+}
+
+.Drawer-sheet {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  height: 100svh;
+  overflow-y: auto;
+  scroll-snap-align: start;
+  scrollbar-width: none;
+}
+
+.Drawer-sheet::-webkit-scrollbar {
+  display: none;
+}
+
+@supports (animation-timeline: scroll()) {
+  .Drawer {
+    timeline-scope: --drawer-fade;
+    animation: fade-drawer-backdrop linear both;
+    animation-timeline: --drawer-fade;
+  }
+
+  .Drawer-scroller {
+    scroll-timeline: --drawer-fade x;
+  }
+
+  @keyframes fade-drawer-backdrop {
+    0% {
+      --drawer-backdrop: 1;
+    }
+    100% {
+      --drawer-backdrop: 0;
+    }
+  }
+}
