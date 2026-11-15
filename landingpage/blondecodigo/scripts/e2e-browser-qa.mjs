@@ -86,6 +86,23 @@ async function runE2E() {
     assert.equal(preloaderCount, 0, 'Preloader should unmount after opening iris');
     console.log('✔ Act 0 Preloader [ENTER WITH SOUND] transition verified.');
 
+    // 1b. Persistent WebGL Liquid Metal Canvas Verification (must remain mounted & active past warm-up)
+    await page.waitForTimeout(2400);
+    const liquidState = await page.evaluate(() => {
+      const stage = document.querySelector('[data-testid="persistent-liquid-stage"]');
+      const canvas = document.getElementById('persistent-liquid-canvas');
+      return {
+        engine: stage?.getAttribute('data-engine'),
+        hasCanvas: Boolean(canvas),
+        width: canvas ? canvas.width : 0,
+        height: canvas ? canvas.height : 0,
+      };
+    });
+    assert.equal(liquidState.engine, 'webgl', `PersistentLiquidCanvas fell back unexpectedly to ${liquidState.engine}`);
+    assert.ok(liquidState.hasCanvas, '#persistent-liquid-canvas must be mounted in the DOM');
+    assert.ok(liquidState.width > 300 && liquidState.height > 300, `Unexpected canvas size ${liquidState.width}x${liquidState.height}`);
+    console.log(`✔ PersistentLiquidCanvas active in WebGL mode (${liquidState.width}x${liquidState.height}).`);
+
     // 2. Verify all external links point to the unified WhatsApp URL with noopener noreferrer
     const externalLinks = await page.$$eval('a[target="_blank"]', (els) =>
       els.map((el) => ({
@@ -321,7 +338,11 @@ async function runE2E() {
 
     await browser.close();
   } finally {
-    server.kill();
+    if (process.platform === 'win32' && server.pid) {
+      spawn('taskkill', ['/pid', String(server.pid), '/T', '/F'], { stdio: 'ignore' });
+    } else {
+      server.kill();
+    }
   }
 }
 

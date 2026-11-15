@@ -10,7 +10,7 @@ export function VectorVsMeltLoupe() {
   const { playLoupeFocus, playShutter } = useStudioAudio();
 
   const stageRef = useRef<HTMLDivElement>(null);
-  const [lensPos, setLensPos] = useState({ x: 70, y: 56 });
+  const [lensPos, setLensPos] = useState({ x: 44, y: 48 });
   const [inspectionMode, setInspectionMode] = useState<
     'loupe' | 'full-blonde' | 'full-generic'
   >('loupe');

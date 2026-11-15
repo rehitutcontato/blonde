@@ -113,7 +113,7 @@ export function MonumentalColophon() {
             <img
               src="/assets/brand/blonde-ai-mark-volt.svg"
               alt="blonde AI Master Emblem"
-              className="w-14 h-14 sm:w-24 sm:h-24 md:w-28 md:w-28 rounded-2xl shadow-[0_0_40px_rgba(204,255,41,0.25)]"
+              className="w-14 h-14 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-2xl shadow-[0_0_40px_rgba(204,255,41,0.25)]"
             />
             <span className="font-sans font-extrabold tracking-[-0.04em] text-[3.5rem] sm:text-[6.5rem] md:text-[9rem] lg:text-[11rem] leading-none text-[#EAE2D3]">
               blonde

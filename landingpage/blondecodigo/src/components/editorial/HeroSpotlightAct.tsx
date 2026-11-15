@@ -104,32 +104,32 @@ export function HeroSpotlightAct() {
           <div ref={hudCardRef} className="transition-transform duration-150">
             <FlutedEmeraldGlass
               intensity="strong"
-              className="rounded-xl p-3.5 sm:p-4 relative"
+              className="rounded-xl p-4 sm:p-5 relative"
             >
               {/* Viewfinder Corner Brackets ⌜ ⌝ ⌞ ⌟ */}
               <span
                 aria-hidden="true"
-                className="pointer-events-none absolute top-2 left-2 z-20 w-2.5 h-2.5 border-t border-l border-[#CCFF29]/80"
+                className="pointer-events-none absolute top-1.5 left-1.5 z-20 w-2.5 h-2.5 border-t border-l border-[#CCFF29]/80"
               />
               <span
                 aria-hidden="true"
-                className="pointer-events-none absolute top-2 right-2 z-20 w-2.5 h-2.5 border-t border-r border-[#CCFF29]/80"
+                className="pointer-events-none absolute top-1.5 right-1.5 z-20 w-2.5 h-2.5 border-t border-r border-[#CCFF29]/80"
               />
               <span
                 aria-hidden="true"
-                className="pointer-events-none absolute bottom-2 left-2 z-20 w-2.5 h-2.5 border-b border-l border-[#CCFF29]/80"
+                className="pointer-events-none absolute bottom-1.5 left-1.5 z-20 w-2.5 h-2.5 border-b border-l border-[#CCFF29]/80"
               />
               <span
                 aria-hidden="true"
-                className="pointer-events-none absolute bottom-2 right-2 z-20 w-2.5 h-2.5 border-b border-r border-[#CCFF29]/80"
+                className="pointer-events-none absolute bottom-1.5 right-1.5 z-20 w-2.5 h-2.5 border-b border-r border-[#CCFF29]/80"
               />
 
-              <div className="flex items-center justify-between font-mono text-[10px] tracking-[0.14em] text-[#EAE2D3] uppercase mb-2.5">
-                <span className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#CCFF29]" />
-                  <span>{t.hero.reelLabel}</span>
+              <div className="flex items-center justify-between gap-2 px-1 font-mono text-[10px] tracking-[0.14em] text-[#EAE2D3] uppercase mb-2.5">
+                <span className="flex items-center gap-1.5 truncate">
+                  <span className="w-1.5 h-1.5 shrink-0 rounded-full bg-[#CCFF29]" />
+                  <span className="truncate">{t.hero.reelLabel}</span>
                 </span>
-                <span className="text-[#CCFF29] font-bold">REC ●</span>
+                <span className="text-[#CCFF29] font-bold shrink-0">REC ●</span>
               </div>
 
               <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg border border-[#EAE2D3]/20 bg-[#090B0A]">

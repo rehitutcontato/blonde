@@ -8,6 +8,7 @@ export interface GpuCapabilityReport {
   enableBloom: boolean;
   prefersReducedMotion: boolean;
   isMobileViewport: boolean;
+  rendererLabel: string;
   reason: string;
 }
 
@@ -21,6 +22,7 @@ export function detectGpuQualityTier(): GpuCapabilityReport {
       enableBloom: true,
       prefersReducedMotion: false,
       isMobileViewport: false,
+      rendererLabel: 'ssr',
       reason: 'ssr-default',
     };
   }
@@ -42,6 +44,8 @@ export function detectGpuQualityTier(): GpuCapabilityReport {
   // Check WebGL availability
   let webglAvailable = false;
   let isSoftwareRenderer = false;
+  let rendererLabel = 'unknown';
+
   try {
     const canvas = document.createElement('canvas');
     const gl =
@@ -54,16 +58,17 @@ export function detectGpuQualityTier(): GpuCapabilityReport {
         'WEBGL_debug_renderer_info'
       );
       if (debugInfo) {
-        const renderer = String(
+        rendererLabel = String(
           (gl as WebGLRenderingContext).getParameter(
             debugInfo.UNMASKED_RENDERER_WEBGL
-          ) || ''
-        ).toLowerCase();
+          ) || 'webgl'
+        );
+        const lower = rendererLabel.toLowerCase();
         if (
-          renderer.includes('swiftshader') ||
-          renderer.includes('llvmpipe') ||
-          renderer.includes('software') ||
-          renderer.includes('basic render')
+          lower.includes('swiftshader') ||
+          lower.includes('llvmpipe') ||
+          lower.includes('software') ||
+          lower.includes('basic render')
         ) {
           isSoftwareRenderer = true;
         }
@@ -73,12 +78,8 @@ export function detectGpuQualityTier(): GpuCapabilityReport {
     webglAvailable = false;
   }
 
-  if (
-    !webglAvailable ||
-    prefersReducedMotion ||
-    saveData ||
-    isSoftwareRenderer
-  ) {
+  // Only fall back to static/video mode if WebGL is unavailable, user prefers reduced motion, or data-saver is active
+  if (!webglAvailable || prefersReducedMotion || saveData) {
     return {
       tier: 'fallback',
       dpr: [1, 1],
@@ -87,63 +88,43 @@ export function detectGpuQualityTier(): GpuCapabilityReport {
       enableBloom: false,
       prefersReducedMotion,
       isMobileViewport,
+      rendererLabel,
       reason: !webglAvailable
         ? 'no-webgl'
         : prefersReducedMotion
           ? 'reduced-motion'
-          : saveData
-            ? 'save-data'
-            : 'software-renderer',
+          : 'save-data',
     };
   }
 
-  if (isMobileViewport) {
-    // On mobile (<768px): use lightweight hybrid mode (video loop + optimized shader accents) per como-criar/08
-    if (cores <= 4 || memory <= 3) {
-      return {
-        tier: 'fallback',
-        dpr: [1, 1],
-        enableRaymarching: false,
-        enableGlassRefraction: false,
-        enableBloom: false,
-        prefersReducedMotion,
-        isMobileViewport: true,
-        reason: 'mobile-low-spec',
-      };
-    }
+  // Lightweight 3D Mesh WebGL runs smoothly on mobile, integrated laptops, and software renderers
+  if (isMobileViewport || isSoftwareRenderer || window.innerWidth < 1024 || cores <= 6 || memory < 4) {
     return {
       tier: 'medium',
-      dpr: [1, 1.25],
-      enableRaymarching: true,
-      enableGlassRefraction: false,
+      dpr: [1, isMobileViewport ? 1.15 : 1.25],
+      enableRaymarching: false,
+      enableGlassRefraction: !isMobileViewport && !isSoftwareRenderer,
       enableBloom: false,
       prefersReducedMotion,
-      isMobileViewport: true,
-      reason: 'mobile-capable',
-    };
-  }
-
-  if (window.innerWidth < 1024 || cores <= 6 || memory < 4) {
-    return {
-      tier: 'medium',
-      dpr: [1, 1.25],
-      enableRaymarching: true,
-      enableGlassRefraction: true,
-      enableBloom: false,
-      prefersReducedMotion,
-      isMobileViewport: false,
-      reason: 'medium-laptop-or-tablet',
+      isMobileViewport,
+      rendererLabel,
+      reason: isSoftwareRenderer
+        ? 'software-webgl-optimized-mesh'
+        : isMobileViewport
+          ? 'mobile-optimized-mesh'
+          : 'medium-laptop-or-tablet',
     };
   }
 
   return {
     tier: 'high',
-    dpr: [1, 1.75],
+    dpr: [1, 1.5],
     enableRaymarching: true,
     enableGlassRefraction: true,
     enableBloom: true,
     prefersReducedMotion: false,
     isMobileViewport: false,
+    rendererLabel,
     reason: 'desktop-high-tier',
   };
 }

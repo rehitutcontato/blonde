@@ -1,11 +1,29 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useLocale } from '@/lib/i18n/dictionary';
 import { OpticalTelemetryText } from '@/components/interactions/OpticalTelemetryText';
 
 export function DiagnosisNewspaperAct() {
   const { t } = useLocale();
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const vid = videoRef.current;
+    if (!vid) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          vid.play().catch(() => {});
+        } else {
+          vid.pause();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    obs.observe(vid);
+    return () => obs.disconnect();
+  }, []);
 
   return (
     <section
@@ -137,13 +155,13 @@ export function DiagnosisNewspaperAct() {
               <span>FIG 01 // LIQUID METAL ANATOMY</span>
               <span className="text-[#CCFF29] font-bold">Z-1 FIELD</span>
             </div>
-            <div className="relative aspect-[4/4] w-full overflow-hidden rounded-lg border border-[#EAE2D3]/15 bg-[#090B0A]">
+            <div className="relative aspect-square w-full overflow-hidden rounded-lg border border-[#EAE2D3]/15 bg-[#090B0A]">
               <video
-                autoPlay
+                ref={videoRef}
                 muted
                 loop
                 playsInline
-                preload="metadata"
+                preload="none"
                 poster="/assets/images/liquid-metal-sculpt-b.jpg"
                 className="w-full h-full object-cover"
               >

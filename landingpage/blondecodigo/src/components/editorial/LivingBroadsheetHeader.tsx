@@ -326,17 +326,17 @@ export function LivingBroadsheetHeader() {
               >
                 <span
                   className={`w-0.5 bg-current transition-all ${
-                    soundEnabled ? 'h-2.5 animate-pulse' : 'h-1 opacity-50'
+                    soundEnabled ? 'h-2.5 animate-pulse' : 'h-1.5 opacity-45'
                   }`}
                 />
                 <span
                   className={`w-0.5 bg-current transition-all ${
-                    soundEnabled ? 'h-3 animate-pulse' : 'h-1 opacity-50'
+                    soundEnabled ? 'h-3 animate-pulse' : 'h-2.5 opacity-45'
                   }`}
                 />
                 <span
                   className={`w-0.5 bg-current transition-all ${
-                    soundEnabled ? 'h-2 animate-pulse' : 'h-1 opacity-50'
+                    soundEnabled ? 'h-2 animate-pulse' : 'h-1 opacity-45'
                   }`}
                 />
               </span>
