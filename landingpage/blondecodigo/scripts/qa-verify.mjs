@@ -51,7 +51,14 @@ const requiredCodeFiles = [
 for (const f of requiredCodeFiles) {
   checkFileExists(f, 100);
 }
-console.log(`✔ Verified all ${requiredCodeFiles.length} architecture files.`);
+const pkgJson = JSON.parse(fs.readFileSync(path.join(rootDir, 'package.json'), 'utf8'));
+const nextVer = String(pkgJson.dependencies?.next || '').replace(/^[\^~]/, '');
+const [nextMajor, nextMinor, nextPatch] = nextVer.split('.').map(Number);
+assert.ok(
+  nextMajor > 16 || (nextMajor === 16 && (nextMinor > 4 || (nextMinor === 4 && nextPatch >= 6))),
+  `Vulnerable or outdated Next.js version in package.json: ${pkgJson.dependencies?.next} (expected >= 16.4.6)`
+);
+console.log(`✔ Verified all ${requiredCodeFiles.length} architecture files and secure Next.js version (${pkgJson.dependencies.next}).`);
 
 console.log('=== [2/6] Checking Official Assets in public/assets/ ===');
 const requiredAssets = [
