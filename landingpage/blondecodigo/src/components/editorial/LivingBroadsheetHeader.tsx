@@ -627,7 +627,7 @@ export function LivingBroadsheetHeader() {
                 <span>{t.hero.cta}</span>
               </a>
               <p className="font-mono text-[10px] tracking-[0.12em] text-center text-[#9CA39E] uppercase">
-                BETA v0.5: 09 APR 2027 · LAUNCH: MAY 2027
+                BETA v0.5: 27 APR 2027 · LAUNCH: MAY 2027
               </p>
             </div>
           </nav>

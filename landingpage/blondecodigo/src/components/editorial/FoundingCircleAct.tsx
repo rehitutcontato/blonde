@@ -87,7 +87,7 @@ export function FoundingCircleAct() {
             ))}
           </div>
 
-          {/* Official Genesis Roadmap Timeline (NOW -> 09 APR 2027 -> MAY 2027) */}
+          {/* Official Genesis Roadmap Timeline (NOW -> 27 APR 2027 -> MAY 2027) */}
           <div className="p-5 sm:p-7 rounded-2xl bg-[#0B4635]/35 border border-[#13634C] space-y-6">
             <p className="font-mono text-xs sm:text-sm text-[#CCFF29] tracking-[0.06em] leading-relaxed">
               {t.act6.datesNote}

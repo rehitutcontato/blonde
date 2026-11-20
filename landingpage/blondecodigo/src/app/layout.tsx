@@ -56,7 +56,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: 'blonde AI — Stand Out in the Crowd | Autonomous Creative Engine (AaaS)',
   description:
-    'Not another editing dashboard that makes you work. Bring your creative vision and raw footage or phone photos—blonde AI delivers finished, studio-grade ad campaigns ready to run. Brazil Genesis Access · Beta v0.5 opens April 9, 2027.',
+    'Not another editing dashboard that makes you work. Bring your creative vision and raw footage or phone photos—blonde AI delivers finished, studio-grade ad campaigns ready to run. Brazil Genesis Access · Beta v0.5 opens April 27, 2027.',
   icons: {
     icon: '/assets/brand/blonde-ai-mark-volt.svg',
     shortcut: '/assets/brand/blonde-ai-mark-volt.svg',
@@ -76,7 +76,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'blonde AI — Stand Out in the Crowd (Genesis Waitlist)',
     description:
-      'Bring your creative vision and real assets. We deliver the finished studio commercial. Beta v0.5 opens April 9, 2027 · Official Launch May 2027.',
+      'Bring your creative vision and real assets. We deliver the finished studio commercial. Beta v0.5 opens April 27, 2027 · Official Launch May 2027.',
     url: siteUrl,
     siteName: 'blonde AI',
     images: [

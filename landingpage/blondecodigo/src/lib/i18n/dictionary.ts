@@ -249,7 +249,7 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
     meta: {
       title: 'blonde AI — Stand Out in the Crowd | Autonomous Creative Engine (AaaS)',
       description:
-        'Bring your creative vision and raw footage or phone photos—blonde AI delivers finished, studio-grade ad campaigns ready to run. Brazil Genesis Access · Beta v0.5 opens April 9, 2027.',
+        'Bring your creative vision and raw footage or phone photos—blonde AI delivers finished, studio-grade ad campaigns ready to run. Brazil Genesis Access · Beta v0.5 opens April 27, 2027.',
     },
     preloader: {
       line1: 'Welcome to what sets you',
@@ -281,7 +281,7 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
       },
     },
     hero: {
-      badge: 'BRAZIL GENESIS ACCESS · GLOBAL STANDARD · BETA 0.5: 09 APR 2027',
+      badge: 'BRAZIL GENESIS ACCESS · GLOBAL STANDARD · BETA 0.5: 27 APR 2027',
       headline: {
         before: 'THE CROWD IS GREY.',
         italicFlash: 'Own',
@@ -291,7 +291,7 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
         'Not another editing dashboard that makes you work. Bring your creative vision and raw footage or phone photos—blonde AI delivers finished, studio-grade ad campaigns ready to run.',
       cta: 'ENTER THE PRIVATE WAITLIST ↗',
       microcopy:
-        'Direct founder access · Beta v0.5 & Founder seats drop exclusively inside the WhatsApp circle on Apr 9, 2027.',
+        'Direct founder access · Beta v0.5 & Founder seats drop exclusively inside the WhatsApp circle on Apr 27, 2027.',
       reelLabel: 'STUDIO MOTION PROOF // 30° VOLT ANAMORPHIC',
       scrollCue: 'READ LIVING BROADSHEET ↓',
     },
@@ -430,11 +430,11 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
         },
       ],
       datesNote:
-        'BETA v0.5 OPENS APRIL 9, 2027 — Founder pre-sale link drops exclusively inside WhatsApp 1 month before the May 2027 Official Launch.',
+        'BETA v0.5 OPENS APRIL 27, 2027 — Founder pre-sale link drops exclusively inside WhatsApp 1 month before the May 2027 Official Launch.',
       timeline: {
         step1Date: 'NOW',
         step1Label: 'Private WhatsApp Waitlist (Brazil First · Open for Founding Voices)',
-        step2Date: '09 APR 2027',
+        step2Date: '27 APR 2027',
         step2Label: 'Closed Beta v0.5 + Exclusive Founder Pre-Sale Link (Dropped Only in Group)',
         step3Date: 'MAY 2027',
         step3Label: 'Global Public Launch (blonde.ai)',
@@ -445,7 +445,7 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
       wordmark: 'blonde AI',
       slogan: 'STAND OUT IN THE CROWD.',
       statusLine:
-        'BRAZIL GENESIS ACCESS · BETA v0.5: 09 APR 2027 · GLOBAL LAUNCH: MAY 2027 · TARGET URL: blonde.ai',
+        'BRAZIL GENESIS ACCESS · BETA v0.5: 27 APR 2027 · GLOBAL LAUNCH: MAY 2027 · TARGET URL: blonde.ai',
       whatsappCircleLabel: 'WHATSAPP GENESIS CIRCLE ↗',
       rights: '© 2026–2027 blonde AI — All Rights Reserved. Target future domain: blonde.ai',
     },
@@ -455,7 +455,7 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
     meta: {
       title: 'blonde AI — Brilhe no Meio da Multidão | Motor Criativo Autônomo (AaaS)',
       description:
-        'Traga sua visão criativa e gravações ou fotos reais do celular—a blonde AI entrega campanhas de estúdio finalizadas, prontas para rodar. Acesso Gênese Brasil · Beta v0.5 abre em 09 de Abril de 2027.',
+        'Traga sua visão criativa e gravações ou fotos reais do celular—a blonde AI entrega campanhas de estúdio finalizadas, prontas para rodar. Acesso Gênese Brasil · Beta v0.5 abre em 27 de Abril de 2027.',
     },
     preloader: {
       line1: 'Bem-vindo ao que separa você',
@@ -487,7 +487,7 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
       },
     },
     hero: {
-      badge: 'ACESSO GÊNESE BRASIL · PADRÃO GLOBAL · BETA 0.5: 09 ABR 2027',
+      badge: 'ACESSO GÊNESE BRASIL · PADRÃO GLOBAL · BETA 0.5: 27 ABR 2027',
       headline: {
         before: 'A MULTIDÃO É CINZA.',
         italicFlash: 'Domine',
@@ -497,7 +497,7 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
         'Não é mais um painel de edição que faz você trabalhar. Traga sua visão criativa e gravações ou fotos reais do celular—a blonde AI entrega campanhas de estúdio finalizadas, prontas para rodar.',
       cta: 'ENTRAR NA LISTA DE ESPERA VIP ↗',
       microcopy:
-        'Acesso direto ao fundador · Vagas Founder e Beta v0.5 liberados exclusivamente no grupo em 09 de Abr, 2027.',
+        'Acesso direto ao fundador · Vagas Founder e Beta v0.5 liberados exclusivamente no grupo em 27 de Abr, 2027.',
       reelLabel: 'PROVA DE ESTÚDIO // LENTE ANAMÓRFICA 30° VOLT',
       scrollCue: 'LER JORNAL VIVO ↓',
     },
@@ -636,11 +636,11 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
         },
       ],
       datesNote:
-        'BETA v0.5 ABRE EM 09 DE ABRIL DE 2027 — O link da pré-venda Founder será enviado exclusivamente no WhatsApp 1 mês antes do Lançamento Oficial em Maio de 2027.',
+        'BETA v0.5 ABRE EM 27 DE ABRIL DE 2027 — O link da pré-venda Founder será enviado exclusivamente no WhatsApp 1 mês antes do Lançamento Oficial em Maio de 2027.',
       timeline: {
         step1Date: 'AGORA',
         step1Label: 'Lista de Espera Privada no WhatsApp (Brasil Primeiro · Aberto para Vozes Fundadoras)',
-        step2Date: '09 ABR 2027',
+        step2Date: '27 ABR 2027',
         step2Label: 'Beta Fechado v0.5 + Link Exclusivo Pré-Venda Founder (Enviado Só no Grupo)',
         step3Date: 'MAIO 2027',
         step3Label: 'Lançamento Público Global (blonde.ai)',
@@ -652,7 +652,7 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
       slogan: 'STAND OUT IN THE CROWD.',
       sloganAux: 'BRILHE NO MEIO DA MULTIDÃO.',
       statusLine:
-        'BRAZIL GENESIS ACCESS · BETA v0.5: 09 APR 2027 · GLOBAL LAUNCH: MAY 2027 · TARGET URL: blonde.ai',
+        'BRAZIL GENESIS ACCESS · BETA v0.5: 27 APR 2027 · GLOBAL LAUNCH: MAY 2027 · TARGET URL: blonde.ai',
       whatsappCircleLabel: 'CÍRCULO GÊNESE WHATSAPP ↗',
       rights: '© 2026–2027 blonde AI — Todos os direitos reservados. Domínio alvo futuro: blonde.ai',
     },
@@ -662,7 +662,7 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
     meta: {
       title: 'blonde AI — Stand Out in the Crowd | Autonome Creative Engine (AaaS)',
       description:
-        'Bring deine kreative Vision und echtes Rohmaterial—blonde AI liefert fertige Studio-Kampagnen, bereit zum Schalten. Beta v0.5 startet am 09. April 2027.',
+        'Bring deine kreative Vision und echtes Rohmaterial—blonde AI liefert fertige Studio-Kampagnen, bereit zum Schalten. Beta v0.5 startet am 27. April 2027.',
     },
     preloader: {
       line1: 'Willkommen bei dem, was dich',
@@ -694,7 +694,7 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
       },
     },
     hero: {
-      badge: 'BRASILIEN GENESIS-ZUGANG · GLOBAL STANDARD · BETA 0.5: 09. APR 2027',
+      badge: 'BRASILIEN GENESIS-ZUGANG · GLOBAL STANDARD · BETA 0.5: 27. APR 2027',
       headline: {
         before: 'DIE MASSE IST GRAU.',
         italicFlash: 'Beherrsche',
@@ -704,7 +704,7 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
         'Kein weiteres Schnitt-Tool, das dich arbeiten lässt. Bring deine kreative Vision und echtes Rohmaterial—blonde AI liefert fertige Studio-Kampagnen, bereit zum Schalten.',
       cta: 'AUF DIE PRIVATE WARTELISTE ↗',
       microcopy:
-        'Direkter Gründer-Zugang · Beta v0.5 & Founder-Plätze exklusiv in der WhatsApp-Gruppe am 09. Apr 2027.',
+        'Direkter Gründer-Zugang · Beta v0.5 & Founder-Plätze exklusiv in der WhatsApp-Gruppe am 27. Apr 2027.',
       reelLabel: 'STUDIO-BEWEIS // 30° VOLT ANAMORPHISCH',
       scrollCue: 'AUSGABE LESEN ↓',
     },
@@ -843,11 +843,11 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
         },
       ],
       datesNote:
-        'BETA v0.5 STARTET AM 09. APRIL 2027 — Der exklusive Founder-Vorverkauf erfolgt nur in WhatsApp, 1 Monat vor dem offiziellen Launch im Mai 2027.',
+        'BETA v0.5 STARTET AM 27. APRIL 2027 — Der exklusive Founder-Vorverkauf erfolgt nur in WhatsApp, 1 Monat vor dem offiziellen Launch im Mai 2027.',
       timeline: {
         step1Date: 'JETZT',
         step1Label: 'Private WhatsApp-Warteliste (Brasilien Zuerst · Offen für Gründerstimmen)',
-        step2Date: '09. APR 2027',
+        step2Date: '27. APR 2027',
         step2Label: 'Closed Beta v0.5 + Exklusiver Founder-Vorverkauf (Nur in der Gruppe)',
         step3Date: 'MAI 2027',
         step3Label: 'Offizieller Globaler Launch (blonde.ai)',
@@ -858,7 +858,7 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
       wordmark: 'blonde AI',
       slogan: 'STAND OUT IN THE CROWD.',
       statusLine:
-        'BRAZIL GENESIS ACCESS · BETA v0.5: 09 APR 2027 · GLOBAL LAUNCH: MAY 2027 · TARGET URL: blonde.ai',
+        'BRAZIL GENESIS ACCESS · BETA v0.5: 27 APR 2027 · GLOBAL LAUNCH: MAY 2027 · TARGET URL: blonde.ai',
       whatsappCircleLabel: 'WHATSAPP GENESIS-ZIRKEL ↗',
       rights: '© 2026–2027 blonde AI — Alle Rechte vorbehalten. Zukünftige Domain: blonde.ai',
     },
@@ -868,7 +868,7 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
     meta: {
       title: 'blonde AI — Stand Out in the Crowd | Moteur Créatif Autonome (AaaS)',
       description:
-        'Apportez votre vision créative et vos rushs bruts—blonde AI livre des campagnes studio terminées, prêtes à diffuser. Bêta v0.5 le 09 avril 2027.',
+        'Apportez votre vision créative et vos rushs bruts—blonde AI livre des campagnes studio terminées, prêtes à diffuser. Bêta v0.5 le 27 avril 2027.',
     },
     preloader: {
       line1: 'Bienvenue dans ce qui vous',
@@ -900,7 +900,7 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
       },
     },
     hero: {
-      badge: 'ACCÈS GENÈSE BRÉSIL · STANDARD MONDIAL · BÊTA 0.5 : 09 AVR 2027',
+      badge: 'ACCÈS GENÈSE BRÉSIL · STANDARD MONDIAL · BÊTA 0.5 : 27 AVR 2027',
       headline: {
         before: 'LA FOULE EST GRISE.',
         italicFlash: 'Prenez',
@@ -910,7 +910,7 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
         'Pas un énième outil qui vous fait travailler. Apportez votre vision créative et vos rushs bruts—blonde AI livre des campagnes studio terminées, prêtes à diffuser.',
       cta: 'REJOINDRE LA LISTE PRIVÉE ↗',
       microcopy:
-        'Accès direct au fondateur · Bêta v0.5 et places Founder envoyés en exclusivité dans le groupe le 09 avr. 2027.',
+        'Accès direct au fondateur · Bêta v0.5 et places Founder envoyés en exclusivité dans le groupe le 27 avr. 2027.',
       reelLabel: 'PREUVE STUDIO // ANAMORPHIQUE 30° VOLT',
       scrollCue: 'LIRE LE JOURNAL ↓',
     },
@@ -1049,11 +1049,11 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
         },
       ],
       datesNote:
-        'BÊTA v0.5 LE 09 AVRIL 2027 — Le lien exclusif Founder est partagé uniquement sur WhatsApp 1 mois avant le lancement officiel de mai 2027.',
+        'BÊTA v0.5 LE 27 AVRIL 2027 — Le lien exclusif Founder est partagé uniquement sur WhatsApp 1 mois avant le lancement officiel de mai 2027.',
       timeline: {
         step1Date: 'MAINTENANT',
         step1Label: 'Liste Privée WhatsApp (Brésil d’abord · Ouvert aux Voix Fondatrices)',
-        step2Date: '09 AVR 2027',
+        step2Date: '27 AVR 2027',
         step2Label: 'Bêta Fermée v0.5 + Lien Exclusif Prévente Founder (Dans le Groupe)',
         step3Date: 'MAI 2027',
         step3Label: 'Lancement Public Mondial (blonde.ai)',
@@ -1064,7 +1064,7 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
       wordmark: 'blonde AI',
       slogan: 'STAND OUT IN THE CROWD.',
       statusLine:
-        'BRAZIL GENESIS ACCESS · BETA v0.5: 09 APR 2027 · GLOBAL LAUNCH: MAY 2027 · TARGET URL: blonde.ai',
+        'BRAZIL GENESIS ACCESS · BETA v0.5: 27 APR 2027 · GLOBAL LAUNCH: MAY 2027 · TARGET URL: blonde.ai',
       whatsappCircleLabel: 'CERCLE GENÈSE WHATSAPP ↗',
       rights: '© 2026–2027 blonde AI — Tous droits réservés. Domaine futur cible : blonde.ai',
     },
@@ -1074,7 +1074,7 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
     meta: {
       title: 'blonde AI — Stand Out in the Crowd | Motor Creativo Autónomo (AaaS)',
       description:
-        'Trae tu visión creativa y tomas o fotos reales—blonde AI entrega campañas de estudio terminadas, listas para lanzar. Beta v0.5 abre el 09 de abril de 2027.',
+        'Trae tu visión creativa y tomas o fotos reales—blonde AI entrega campañas de estudio terminadas, listas para lanzar. Beta v0.5 abre el 27 de abril de 2027.',
     },
     preloader: {
       line1: 'Bienvenido a lo que te separa',
@@ -1106,7 +1106,7 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
       },
     },
     hero: {
-      badge: 'ACCESO GÉNESIS BRASIL · ESTÁNDAR GLOBAL · BETA 0.5: 09 ABR 2027',
+      badge: 'ACCESO GÉNESIS BRASIL · ESTÁNDAR GLOBAL · BETA 0.5: 27 ABR 2027',
       headline: {
         before: 'LA MULTITUD ES GRIS.',
         italicFlash: 'Domina',
@@ -1116,7 +1116,7 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
         'No es otro panel que te hace trabajar. Trae tu visión creativa y tomas o fotos reales—blonde AI entrega campañas de estudio terminadas, listas para lanzar.',
       cta: 'ENTRAR A LA LISTA PRIVADA ↗',
       microcopy:
-        'Acceso directo al fundador · Beta v0.5 y cupos Founder liberados solo en el grupo el 09 abr, 2027.',
+        'Acceso directo al fundador · Beta v0.5 y cupos Founder liberados solo en el grupo el 27 abr, 2027.',
       reelLabel: 'PRUEBA DE ESTUDIO // LENTE ANAMÓRFICO 30° VOLT',
       scrollCue: 'LEER PERIÓDICO VIVO ↓',
     },
@@ -1255,11 +1255,11 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
         },
       ],
       datesNote:
-        'BETA v0.5 ABRE EL 09 DE ABRIL DE 2027 — El enlace de preventa Founder se enviará solo por WhatsApp 1 mes antes del lanzamiento oficial en mayo de 2027.',
+        'BETA v0.5 ABRE EL 27 DE ABRIL DE 2027 — El enlace de preventa Founder se enviará solo por WhatsApp 1 mes antes del lanzamiento oficial en mayo de 2027.',
       timeline: {
         step1Date: 'AHORA',
         step1Label: 'Lista Privada en WhatsApp (Brasil Primero · Abierto a Voces Fundadoras)',
-        step2Date: '09 ABR 2027',
+        step2Date: '27 ABR 2027',
         step2Label: 'Beta Cerrada v0.5 + Enlace Exclusivo Preventa Founder (Solo en el Grupo)',
         step3Date: 'MAYO 2027',
         step3Label: 'Lanzamiento Público Global (blonde.ai)',
@@ -1270,7 +1270,7 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
       wordmark: 'blonde AI',
       slogan: 'STAND OUT IN THE CROWD.',
       statusLine:
-        'BRAZIL GENESIS ACCESS · BETA v0.5: 09 APR 2027 · GLOBAL LAUNCH: MAY 2027 · TARGET URL: blonde.ai',
+        'BRAZIL GENESIS ACCESS · BETA v0.5: 27 APR 2027 · GLOBAL LAUNCH: MAY 2027 · TARGET URL: blonde.ai',
       whatsappCircleLabel: 'CÍRCULO GÉNESIS WHATSAPP ↗',
       rights: '© 2026–2027 blonde AI — Todos los derechos reservados. Dominio futuro: blonde.ai',
     },
@@ -1280,7 +1280,7 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
     meta: {
       title: 'blonde AI — Stand Out in the Crowd | Motore Creativo Autonomo (AaaS)',
       description:
-        'Porta la tua visione creativa e clip o foto reali—blonde AI consegna campagne da studio finite, pronte a girare. Beta v0.5 apre il 09 aprile 2027.',
+        'Porta la tua visione creativa e clip o foto reali—blonde AI consegna campagne da studio finite, pronte a girare. Beta v0.5 apre il 27 aprile 2027.',
     },
     preloader: {
       line1: 'Benvenuto in ciò che ti distingue',
@@ -1312,7 +1312,7 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
       },
     },
     hero: {
-      badge: 'ACCESSO GENESI BRASILE · STANDARD GLOBALE · BETA 0.5: 09 APR 2027',
+      badge: 'ACCESSO GENESI BRASILE · STANDARD GLOBALE · BETA 0.5: 27 APR 2027',
       headline: {
         before: 'LA FOLLA È GRIGIA.',
         italicFlash: 'Prendi',
@@ -1322,7 +1322,7 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
         'Non è l’ennesimo software che ti fa lavorare. Porta la tua visione creativa e clip o foto reali—blonde AI consegna campagne da studio finite, pronte a girare.',
       cta: 'ENTRA NELLA LISTA PRIVATA ↗',
       microcopy:
-        'Accesso diretto al fondatore · Beta v0.5 e posti Founder sbloccati solo nel gruppo il 09 apr 2027.',
+        'Accesso diretto al fondatore · Beta v0.5 e posti Founder sbloccati solo nel gruppo il 27 apr 2027.',
       reelLabel: 'PROVA STUDIO // LENTE ANAMORFICA 30° VOLT',
       scrollCue: 'LEGGI IL GIORNALE ↓',
     },
@@ -1461,11 +1461,11 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
         },
       ],
       datesNote:
-        'BETA v0.5 APRE IL 09 APRILE 2027 — Il link esclusivo Founder sarà inviato solo su WhatsApp 1 mese prima del lancio ufficiale di maggio 2027.',
+        'BETA v0.5 APRE IL 27 APRILE 2027 — Il link esclusivo Founder sarà inviato solo su WhatsApp 1 mese prima del lancio ufficiale di maggio 2027.',
       timeline: {
         step1Date: 'ORA',
         step1Label: 'Lista Privata WhatsApp (Brasile Prima · Aperto alle Voci Fondatrici)',
-        step2Date: '09 APR 2027',
+        step2Date: '27 APR 2027',
         step2Label: 'Closed Beta v0.5 + Link Esclusivo Prevendita Founder (Solo nel Gruppo)',
         step3Date: 'MAGGIO 2027',
         step3Label: 'Lancio Pubblico Globale (blonde.ai)',
@@ -1476,7 +1476,7 @@ export const DICTIONARY: Record<LocaleCode, LocaleDictionary> = {
       wordmark: 'blonde AI',
       slogan: 'STAND OUT IN THE CROWD.',
       statusLine:
-        'BRAZIL GENESIS ACCESS · BETA v0.5: 09 APR 2027 · GLOBAL LAUNCH: MAY 2027 · TARGET URL: blonde.ai',
+        'BRAZIL GENESIS ACCESS · BETA v0.5: 27 APR 2027 · GLOBAL LAUNCH: MAY 2027 · TARGET URL: blonde.ai',
       whatsappCircleLabel: 'CERCHIO GENESI WHATSAPP ↗',
       rights: '© 2026–2027 blonde AI — Tutti i diritti riservati. Dominio futuro: blonde.ai',
     },
